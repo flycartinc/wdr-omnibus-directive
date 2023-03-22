@@ -46,9 +46,15 @@ class Admin
         if(isset($is_eligible) && empty($is_eligible)){
             return '';
         }
-        $min_price = Helper::omnibusForDiscountRules();
+        $helper = new Helper();
+        $min_price = $helper->omnibusForDiscountRules();
+        $date = $helper->date;
         if (!empty($min_price)) {
-            $message = "Previous lowest price was (from awdr)"." ".wc_price($min_price);
+            $custom_message = get_option('_awdr_om_message');
+            $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}}";
+            $message = str_replace('{{price}}', wc_price($min_price), $message);
+            $lowest_price_date = isset($date) && !empty($date)? $date : 0;
+            $message = str_replace('{{date}}', date_i18n(get_option('date_format'),$lowest_price_date), $message);
         } else {
             return '';
         }
@@ -69,7 +75,7 @@ class Admin
             $prices = array_column($awdr_price_history, 'price');
             $price_lowest = min($prices);
 
-            foreach ($awdr_price_history as $key => $awdr_price_history_data) {
+            foreach ($awdr_price_history as $awdr_price_history_data) {
                 if($awdr_price_history_data['price'] == $price_lowest){
                     $timestamp = $awdr_price_history_data['timestamp'];
                 }
@@ -91,11 +97,13 @@ class Admin
         if(isset($_POST['submit']) && is_numeric($_POST['awdr_refresh_date']) && is_numeric($_POST['show_omnibus_message_option']) && $_POST['awdr_refresh_date'] >= 30) {
             $updated_days = $_POST['awdr_refresh_date'];
             $show_omnibus_message_option = $_POST['show_omnibus_message_option'];
+            $message = $_POST['awdr_om_message'];
             $selected_rules = $_POST['selected_rules'];
             $position_to_show_message = $_POST['position_to_show_message'];
 
             update_option('_awdr_price_lowest_days',$updated_days );
             update_option('_awdr_show_omnibus_message',$show_omnibus_message_option );
+            update_option('_awdr_om_message',$message );
             update_option('_awdr_om_selected_rules',$selected_rules );
             update_option('_awdr_position_to_show_message',$position_to_show_message );
         }

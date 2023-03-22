@@ -15,11 +15,13 @@ use WDR_OD\App\Controllers\Admin\OmnibusAddon;
 
 class Helper {
 
+    public $date;
+
     /**
      * Get and update minimum price
      * @return int|mixed
      */
-    public static function omnibusForDiscountRules() {
+    public function omnibusForDiscountRules() {
 
         global $product;
         $product_id = $product->get_id();
@@ -89,6 +91,13 @@ class Helper {
         if(!empty($awdr_price_history) && is_array($awdr_price_history)){
             $prices = array_column($awdr_price_history, 'price');
             $min_price = min($prices);
+        }
+
+        foreach ($awdr_price_history as $awdr_price_history_data) {
+            if(isset($min_price) && $awdr_price_history_data['price'] == $min_price){
+                $this->date = $awdr_price_history_data['timestamp'];
+                break;
+            }
         }
 
         return isset($min_price) ? $min_price : 0;

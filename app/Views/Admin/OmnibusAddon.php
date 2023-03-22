@@ -35,7 +35,17 @@ if (!defined('ABSPATH')) {
                     ><?php _e('No', 'wdr-omnibus-directive'); ?></label>
                 </td>
             </tr>
-
+            <tr>
+                <td>
+                    <label class="awdr-left-align"><?php _e('Omnibus Message', 'wdr-omnibus-directive') ?></label>
+                    <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('You can use the following shortcode', 'wdr-omnibus-directive'); ?></span>
+                    <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{price}} -> Replace the lowest price', 'wdr-omnibus-directive'); ?></span>
+                </td>
+                <td>
+                    <?php $message = isset($message) && !empty($message)? $message : "Preview lowest price was {{price}}"; ?>
+                    <textarea name="awdr_om_message" rows="5"  cols="30" > <?php _e($message, 'wdr-omnibus-directive'); ?> </textarea>
+                </td>
+            </tr>
             <tr>
                 <td>
                     <label for="" class="awdr-left-align"><?php _e('Select rules', 'wdr-omnibus-directive') ?></label>
