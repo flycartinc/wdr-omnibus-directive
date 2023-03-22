@@ -30,6 +30,7 @@ defined('ABSPATH') or exit;
 defined('WDR_OD_PLUGIN_FILE') or define('WDR_OD_PLUGIN_FILE', __FILE__);
 defined('WDR_OD_PLUGIN_PATH') or define('WDR_OD_PLUGIN_PATH', plugin_dir_path(__FILE__));
 defined('WDR_OD_PLUGIN_URL') or define('WDR_OD_PLUGIN_URL', plugin_dir_url(__FILE__));
+defined('WDR_OD_PLUGIN_BASENAME') or define('WDR_OD_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
 // To load composer autoload (psr-4)
 if (file_exists(WDR_OD_PLUGIN_PATH . '/vendor/autoload.php')) {

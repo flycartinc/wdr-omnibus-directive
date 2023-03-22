@@ -109,4 +109,16 @@ class Admin
         wp_enqueue_style('wdr_od_add_css', trailingslashit(WDR_OD_PLUGIN_URL) . 'assets/Css/style.css');
         wp_enqueue_script('wdr_od_add_js',trailingslashit(WDR_OD_PLUGIN_URL) . 'assets/Js/index.js',array('jquery'));
     }
+
+    /**
+     * Add settings link in plugins page
+     * @param $links
+     * @return string[]
+     */
+    public static function wdrOmActionLink($links) {
+        $action_links = array(
+            'settings' => '<a href="' . esc_url(admin_url('admin.php?page=woo_discount_rules&tab=addons&addon=omnibus_directive&section=settings')) . '">' . __('Settings', 'woo-discount-rules') . '</a>',
+        );
+        return array_merge($action_links, $links);
+    }
 }
