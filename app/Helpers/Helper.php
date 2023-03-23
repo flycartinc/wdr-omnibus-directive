@@ -25,8 +25,6 @@ class Helper {
 
         global $product;
         $product_id = $product->get_id();
-
-        $days = get_option('_iwo_price_lowest_days');   // days count from omnibus plugin
         $awdr_days = get_option('_awdr_price_lowest_days');
 
         $sale_price = $product->get_price();
@@ -76,12 +74,7 @@ class Helper {
                 'timestamp' => time(),
             ];
 
-//                if(empty($awdr_price_history)){
-//                    $awdr_price_history = array();
-//                }
-
             $awdr_price_history[] = $awdr_price_history_update;
-
             sort($awdr_price_history);
 
             update_post_meta($product_id, '_awdr_price_current', $awdr_price_current_update);

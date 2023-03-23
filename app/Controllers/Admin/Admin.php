@@ -17,6 +17,16 @@ defined('ABSPATH') or exit;
 class Admin
 {
     /**
+     * @var Helper
+     */
+    private static $helper;
+
+    public function __construct()
+    {
+        self::$helper = empty( self::$helper) ? new Helper() : self::$helper;
+    }
+
+    /**
      * Show minimum price message using omnibus event
      * @param $message
      * @param $price
@@ -25,13 +35,19 @@ class Admin
      */
     public static function mergeOmnibusMessageWithDiscountRule($message, $price, $price_lowest) {
 
-        $is_eligible = Helper::checkRuleId();
+        $is_eligible = self::$helper->checkRuleId();
         if(isset($is_eligible) && empty($is_eligible)){
             return $message;
         }
-        $min_price = Helper::omnibusForDiscountRules();
+
+        $min_price = self::$helper->omnibusForDiscountRules();
+        $date = self::$helper->date;
         if (!empty($min_price)) {
-            $message = "Previous lowest price was (from awdr)"." ".wc_price($min_price);
+            $custom_message = get_option('_awdr_om_message');
+            $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
+            $message = str_replace('{{price}}', wc_price($min_price), $message);
+            $lowest_price_date = isset($date) && !empty($date)? $date : 0;
+            $message = str_replace('{{date}}', date_i18n(get_option('date_format'),$lowest_price_date), $message);
         }
         return $message;
     }
@@ -42,16 +58,16 @@ class Admin
      */
     public static function separateOmnibusMessageForDiscountRule() {
 
-        $is_eligible = Helper::checkRuleId();
+        $is_eligible = self::$helper->checkRuleId();
         if(isset($is_eligible) && empty($is_eligible)){
             return '';
         }
-        $helper = new Helper();
-        $min_price = $helper->omnibusForDiscountRules();
-        $date = $helper->date;
+
+        $min_price = self::$helper->omnibusForDiscountRules();
+        $date = self::$helper->date;
         if (!empty($min_price)) {
             $custom_message = get_option('_awdr_om_message');
-            $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}}";
+            $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
             $lowest_price_date = isset($date) && !empty($date)? $date : 0;
             $message = str_replace('{{date}}', date_i18n(get_option('date_format'),$lowest_price_date), $message);
@@ -83,9 +99,9 @@ class Admin
         }
 
         if(isset($price_lowest) && is_numeric($price_lowest) && isset($timestamp) && is_numeric($timestamp)) {
-            Helper::print_header('description');
-            Helper::woocommerce_wp_text_input_price($price_lowest);
-            Helper::woocommerce_wp_text_input_date($timestamp);
+            self::$helper->print_header('description');
+            self::$helper->woocommerce_wp_text_input_price($price_lowest);
+            self::$helper->woocommerce_wp_text_input_date($timestamp);
         }
     }
 
@@ -94,18 +110,20 @@ class Admin
      * @return void
      */
     public static function saveSettingsData() {
-        if(isset($_POST['submit']) && is_numeric($_POST['awdr_refresh_date']) && is_numeric($_POST['show_omnibus_message_option']) && $_POST['awdr_refresh_date'] >= 30) {
-            $updated_days = $_POST['awdr_refresh_date'];
-            $show_omnibus_message_option = $_POST['show_omnibus_message_option'];
-            $message = $_POST['awdr_om_message'];
-            $selected_rules = $_POST['selected_rules'];
-            $position_to_show_message = $_POST['position_to_show_message'];
+        if(isset($_POST['submit'])) {
+            $updated_days = isset($_POST['awdr_refresh_date']) && is_numeric($_POST['awdr_refresh_date']) && $_POST['awdr_refresh_date'] >= 30 ? $_POST['awdr_refresh_date'] : 30;
+            $show_omnibus_message_option = isset($_POST['show_omnibus_message_option']) && is_numeric($_POST['show_omnibus_message_option']) ? $_POST['show_omnibus_message_option'] : 0;
+            $message = isset($_POST['awdr_om_message']) ? sanitize_textarea_field($_POST['awdr_om_message']) : null;
+            $is_override_omnibus_message = isset($_POST['is_override_omnibus_message']) ? $_POST['is_override_omnibus_message'] : 0;
+            $selected_rules = isset($_POST['selected_rules']) && is_array($_POST['selected_rules']) ? $_POST['selected_rules'] : array();
+            $position_to_show_message = isset($_POST['position_to_show_message']) ? $_POST['position_to_show_message'] : 'woocommerce_before_single_product_summary';
 
-            update_option('_awdr_price_lowest_days',$updated_days );
-            update_option('_awdr_show_omnibus_message',$show_omnibus_message_option );
-            update_option('_awdr_om_message',$message );
-            update_option('_awdr_om_selected_rules',$selected_rules );
-            update_option('_awdr_position_to_show_message',$position_to_show_message );
+            update_option('_awdr_price_lowest_days',$updated_days);
+            update_option('_awdr_show_omnibus_message',$show_omnibus_message_option);
+            update_option('_awdr_om_message',$message);
+            update_option('_is_override_omnibus_message',$is_override_omnibus_message);
+            update_option('_awdr_om_selected_rules',$selected_rules);
+            update_option('_awdr_position_to_show_message',$position_to_show_message);
         }
     }
 
