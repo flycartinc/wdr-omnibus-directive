@@ -26,17 +26,71 @@
 
 defined('ABSPATH') or exit;
 
-// define basic plugin constants
-defined('WDR_OD_PLUGIN_FILE') or define('WDR_OD_PLUGIN_FILE', __FILE__);
-defined('WDR_OD_PLUGIN_PATH') or define('WDR_OD_PLUGIN_PATH', plugin_dir_path(__FILE__));
-defined('WDR_OD_PLUGIN_URL') or define('WDR_OD_PLUGIN_URL', plugin_dir_url(__FILE__));
-defined('WDR_OD_PLUGIN_BASENAME') or define('WDR_OD_PLUGIN_BASENAME', plugin_basename(__FILE__));
+/**
+ * The plugin path
+ */
+if (!defined('WDR_OD_PLUGIN_PATH')) {
+    define('WDR_OD_PLUGIN_PATH', plugin_dir_path(__FILE__));
+}
+
+/**
+ * The plugin url
+ */
+if (!defined('WDR_OD_PLUGIN_URL')) {
+    define('WDR_OD_PLUGIN_URL', plugin_dir_url(__FILE__));
+}
+
+/**
+ * The plugin base name
+ */
+if (!defined('WDR_OD_PLUGIN_BASENAME')) {
+    define('WDR_OD_PLUGIN_BASENAME', plugin_basename(__FILE__));
+}
+
+/**
+ * Required Php Version
+ */
+if (!defined('WDR_OD_PHP_REQUIRED_VERSION')) {
+    define('WDR_OD_PHP_REQUIRED_VERSION', 5.6);
+}
+
+/**
+ * Required WooCommerce Version
+ */
+if (!defined('WDR_OD_WC_REQUIRED_VERSION')) {
+    define('WDR_OD_WC_REQUIRED_VERSION', '3.0.0');
+}
+
+/**
+ * Required WordPress Version
+ */
+if (!defined('WDR_OD_WP_REQUIRED_VERSION')) {
+    define('WDR_OD_WP_REQUIRED_VERSION', '5.2');
+}
+
+/**
+ * Required Discount Rule Version
+ */
+if (!defined('WDR_OD_WDR_REQUIRED_VERSION')) {
+    define('WDR_OD_WDR_REQUIRED_VERSION', '5.4');
+}
 
 // To load composer autoload (psr-4)
 if (file_exists(WDR_OD_PLUGIN_PATH . '/vendor/autoload.php')) {
     require WDR_OD_PLUGIN_PATH . '/vendor/autoload.php';
 } else {
     wp_die('Woo Discount Rules: Omnibus Directive is unable to find the autoload file.');
+}
+
+//Check compatibility
+register_activation_hook(__FILE__, 'wdrOdPluginActivate');
+function wdrOdPluginActivate() {
+    if (class_exists('WDR_OD\App\Controllers\Admin\Compatibility')) {
+        $Compatibility = new WDR_OD\App\Controllers\Admin\Compatibility();
+        $Compatibility->checkVersion();
+    } else {
+        wp_die(__('Woo Discount Rules: Omnibus Directive is unable to find the Compatibility class.'));
+    }
 }
 
 // Call the Route class
