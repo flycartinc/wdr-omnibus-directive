@@ -56,7 +56,7 @@ if (!defined('ABSPATH')) {
                         <textarea name="awdr_om_message" rows="5"  cols="30" > <?php _e($message, 'wdr-omnibus-directive'); ?> </textarea>
                     </td>
                 </tr>
-                <tr class="hide_table_position" id="wdr_om_override_omnibus_message" style="<?php echo empty($show_omnibus_message) ? 'display:none' : ''; ?>" >
+                <tr class="hide_table_position" id="wdr_om_override_omnibus_message" style="<?php echo empty($show_omnibus_message) || empty($is_omnibus_plugin_active) ? 'display:none' : ''; ?>" >
                     <td>
                     </td>
                     <td>
