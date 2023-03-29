@@ -208,4 +208,16 @@ class Helper {
         }
         return false;
     }
+
+    /**
+     * Check Omnibus plugin active or not
+     * @return bool
+     */
+    public function isOmnibusPluginActive() {
+        $active_plugins = apply_filters('active_plugins', get_option('active_plugins', array()));
+        if (is_multisite()) {
+            $active_plugins = array_merge($active_plugins, get_site_option('active_sitewide_plugins', array()));
+        }
+        return in_array('omnibus/omnibus.php', $active_plugins, false) || array_key_exists('omnibus/omnibus.php', $active_plugins);
+    }
 }

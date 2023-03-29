@@ -31,8 +31,11 @@ class Route
         self::$helper = empty( self::$helper) ? new Helper() : self::$helper;
 
         $is_override_omnibus_message = get_option('_is_override_omnibus_message');
+        $is_omnibus_plugin_active = self::$helper->isOmnibusPluginActive();
         $is_override_omnibus_message = isset($is_override_omnibus_message) ? $is_override_omnibus_message : 0;
-        if($is_override_omnibus_message == 1){
+        $is_omnibus_plugin_active = isset($is_omnibus_plugin_active) ? $is_omnibus_plugin_active : 0;
+
+        if($is_override_omnibus_message == 1 && $is_omnibus_plugin_active == 1){
             add_filter('iworks_omnibus_message_template', array(self::$admin, 'mergeOmnibusMessageWithDiscountRule'), 10, 3);
         } else {
             $show_omnibus_message = get_option('_awdr_show_omnibus_message');
@@ -44,7 +47,7 @@ class Route
 
         add_action('woocommerce_product_options_pricing', array(self::$admin, 'showLowestPriceInProductEditPage'), 1 );
 
-        add_filter('plugin_action_links_' . WDR_OD_PLUGIN_BASENAME, array( self::$admin, 'wdrOmActionLink' ));
+        add_filter('plugin_action_links_' . WDR_OD_PLUGIN_BASENAME, array(self::$admin, 'wdrOmActionLink'));
         add_filter('advanced_woo_discount_rules_page_addons', array(self::$helper, 'omnibusAddon'));
         add_action('admin_init',array(self::$admin, 'saveSettingsData'));
         add_action('admin_enqueue_scripts', array(self::$admin,'scriptFiles'));
