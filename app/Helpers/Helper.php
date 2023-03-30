@@ -93,7 +93,7 @@ class Helper {
             }
         }
 
-        return isset($min_price) ? $min_price : 0;
+        return apply_filters('advanced_woo_discount_rules_omnibus_directive_min_price', isset($min_price) ? $min_price : 0 );
 
 //            option to show price when set the discount at first time
 
