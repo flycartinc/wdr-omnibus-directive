@@ -1,0 +1,189 @@
+# Copyright (C) 2023 Flycart
+# This file is distributed under the GPL v3 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Woo Discount Rules: Omnibus Directive 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wdr-omnibus-directive\n"
+"Last-Translator: Kirubanithi G <kirubanithi@flycart.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-03-30T10:09:05+05:30\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: wdr-omnibus-directive\n"
+
+#. Plugin Name of the plugin
+msgid "Woo Discount Rules: Omnibus Directive"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://flycart.org"
+msgstr ""
+
+#. Description of the plugin
+msgid "It helps to display the lowest price of a product for the last n days."
+msgstr ""
+
+#. Author of the plugin
+msgid "Flycart"
+msgstr ""
+
+#: app/Controllers/Admin/Compatibility.php:94
+msgid "Woo Discount Rules: Omnibus Directive can not be activated because it requires minimum PHP version of "
+msgstr ""
+
+#: app/Controllers/Admin/Compatibility.php:97
+msgid "Woocommerce must installed and activated in-order to use Woo Discount Rules: Omnibus Directive!"
+msgstr ""
+
+#: app/Controllers/Admin/Compatibility.php:100
+msgid " Woo Discount Rules: Omnibus Directive requires at least Woocommerce"
+msgstr ""
+
+#: app/Controllers/Admin/Compatibility.php:103
+msgid " Woo Discount Rules: Omnibus Directive requires at least WordPress"
+msgstr ""
+
+#: app/Controllers/Admin/Compatibility.php:106
+msgid "Discount Rules for WooCommerce must installed and activated in-order to use Woo Discount Rules: Omnibus Directive!"
+msgstr ""
+
+#: app/Helpers/Helper.php:116
+msgid "Discount rules lowest preview price"
+msgstr ""
+
+#: app/Helpers/Helper.php:133
+#: app/Helpers/Helper.php:160
+msgid "no data"
+msgstr ""
+
+#: app/Helpers/Helper.php:135
+msgid "Price"
+msgstr ""
+
+#: app/Helpers/Helper.php:138
+msgid "The lowest price in %d days."
+msgstr ""
+
+#: app/Helpers/Helper.php:162
+msgid "Date"
+msgstr ""
+
+#: app/Helpers/Helper.php:165
+msgid "The date when lowest price in %d days occurred."
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:16
+msgid "Omnibus Directive : General settings"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:21
+msgid "Number of days"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:22
+msgid "Record and display number of days after sale was started"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:30
+msgid "Show Omnibus message on product page"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:31
+msgid "Hide the message from omnibus plugin"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:37
+msgid "Yes"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:42
+msgid "No"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:48
+msgid "Omnibus Message"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:49
+msgid "You can use the following shortcode"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:50
+msgid "{{price}} -> Replace the lowest price"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:51
+msgid "{{date}} -> Display the day when was lowest price"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:52
+msgid "<strong>Eg</strong>: Preview lowest price: {price}."
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:65
+msgid "Override the message displayed by Omnibus plugin"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:70
+msgid "Select rules"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:71
+msgid "Select the product adjustment rules"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:74
+msgid " Select rules here "
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:93
+msgid "Position to show message"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:94
+msgid "Position to show message on product page"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:98
+msgid "woocommerce_before_single_product_summary"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:99
+msgid "woocommerce_single_product_summary"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:100
+msgid "woocommerce_before_add_to_cart_form"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:101
+msgid "woocommerce_before_add_to_cart_button"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:102
+msgid "woocommerce_single_variation"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:103
+msgid "woocommerce_before_add_to_cart_quantity"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:104
+msgid "woocommerce_after_add_to_cart_quantity"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:105
+msgid "woocommerce_after_add_to_cart_button"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:106
+msgid "woocommerce_product_meta_start"
+msgstr ""
+
+#: app/Views/Admin/OmnibusAddon.php:107
+msgid "woocommerce_after_single_product_summary"
+msgstr ""
