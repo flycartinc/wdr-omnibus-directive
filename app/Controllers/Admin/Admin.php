@@ -47,7 +47,7 @@ class Admin
             $custom_message = get_option('_awdr_om_message');
             $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
-            $date_format = apply_filters('advanced_woo_discount_rules_omnibus_directive_message_date_format_for_omnibus',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
+            $date_format = apply_filters('advanced_woo_discount_rules_omnibus_directive_message_date_format_for_omnibus',get_date_from_gmt($lowest_price_date,get_option('date_format')), $lowest_price_date, $min_price);
             $message = str_replace('{{date}}', $date_format, $message);
         }
         return apply_filters('advanced_woo_discount_rules_omnibus_directive_message_for_omnibus', $message, $min_price, $lowest_price_date);
@@ -71,8 +71,9 @@ class Admin
             $custom_message = get_option('_awdr_om_message');
             $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
-            $date_format = apply_filters('advanced_woo_discount_rules_omnibus_directive_message_date_format',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
+            $date_format = apply_filters('advanced_woo_discount_rules_omnibus_directive_message_date_format',get_date_from_gmt($lowest_price_date,get_option('date_format')), $lowest_price_date, $min_price);
             $message = str_replace('{{date}}', $date_format, $message);
+            $message = '<div class="awdr-od-message">' . $message . '</div>';
         } else {
             return '';
         }
@@ -113,13 +114,13 @@ class Admin
      * @return void
      */
     public static function saveSettingsData() {
-        if(isset($_POST['submit'])) {
+        if(isset($_POST['awdr-od-submit'])) {
             $updated_days = isset($_POST['awdr_refresh_date']) && is_numeric($_POST['awdr_refresh_date']) && $_POST['awdr_refresh_date'] >= 30 ? $_POST['awdr_refresh_date'] : 30;
             $show_omnibus_message_option = isset($_POST['show_omnibus_message_option']) && is_numeric($_POST['show_omnibus_message_option']) ? $_POST['show_omnibus_message_option'] : 0;
             $message = isset($_POST['awdr_om_message']) ? sanitize_textarea_field($_POST['awdr_om_message']) : null;
             $is_override_omnibus_message = isset($_POST['is_override_omnibus_message']) ? $_POST['is_override_omnibus_message'] : 0;
             $selected_rules = isset($_POST['selected_rules']) && is_array($_POST['selected_rules']) ? $_POST['selected_rules'] : array();
-            $position_to_show_message = isset($_POST['position_to_show_message']) ? $_POST['position_to_show_message'] : 'woocommerce_before_single_product_summary';
+            $position_to_show_message = isset($_POST['position_to_show_message']) ? $_POST['position_to_show_message'] : 'woocommerce_single_product_summary';
 
             update_option('_awdr_price_lowest_days',$updated_days);
             update_option('_awdr_show_omnibus_message',$show_omnibus_message_option);

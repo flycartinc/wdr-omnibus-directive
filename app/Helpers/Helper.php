@@ -37,13 +37,13 @@ class Helper {
         if (!empty($discount) && empty($awdr_price_current)) {
             $awdr_price_current_update = [
                 'price' => $discount,
-                'timestamp' => time(),
+                'timestamp' => current_time('timestamp', true),
             ];
             update_post_meta($product_id, '_awdr_price_current', $awdr_price_current_update);
         }
 
         if(!empty($awdr_price_current)) {
-            $current_price_time_difference = time() - $awdr_price_current['timestamp'];
+            $current_price_time_difference = current_time('timestamp', true) - $awdr_price_current['timestamp'];
             if ($current_price_time_difference > $awdr_days * 24 * 60 * 60) {
                 delete_post_meta($product_id, '_awdr_price_current');
             }
@@ -54,7 +54,7 @@ class Helper {
         }
 
         foreach ( $awdr_price_history as $key => $awdr_price_history_data ) {
-            $history_price_time_difference = time() - $awdr_price_history_data['timestamp'];
+            $history_price_time_difference = current_time('timestamp', true) - $awdr_price_history_data['timestamp'];
             if($history_price_time_difference > $awdr_days * 24 * 60 * 60 ) { //$awdr_days * 24 * 60 * 60
                 unset($awdr_price_history[$key]);
                 update_post_meta($product_id, '_awdr_price_history', $awdr_price_history);
@@ -66,12 +66,12 @@ class Helper {
 
             $awdr_price_history_update = [
                 'price' => $awdr_price_current['price'],
-                'timestamp' => time(),
+                'timestamp' => current_time('timestamp', true),
             ];
 
             $awdr_price_current_update = [
                 'price' => $discount,
-                'timestamp' => time(),
+                'timestamp' => current_time('timestamp', true),
             ];
 
             $awdr_price_history[] = $awdr_price_history_update;
@@ -92,16 +92,7 @@ class Helper {
                 break;
             }
         }
-
         return apply_filters('advanced_woo_discount_rules_omnibus_directive_min_price', isset($min_price) ? $min_price : 0 );
-
-//            option to show price when set the discount at first time
-
-//            $first_price = 1;
-//            if($first_price == 1 && empty($awdr_price_history) && !empty($awdr_price_current) && is_array($awdr_price_current)){
-//                $message = "Previous lowest price was (from awdr test)"." ".wc_price($awdr_price_current['price']);
-//            }
-
     }
 
     /**
