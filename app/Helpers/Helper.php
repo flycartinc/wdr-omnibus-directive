@@ -148,7 +148,7 @@ class Helper {
                 array(
                     'id'                => 'awdr_price_history_date',
                     'custom_attributes' => array('disabled' => 'disabled'),
-                    'value'             => empty($timestamp) ? esc_html__('no data', 'wdr-omnibus-directive') : date_i18n(get_option('date_format'),$timestamp),
+                    'value'             => empty($timestamp) ? esc_html__('no data', 'wdr-omnibus-directive') : get_date_from_gmt($timestamp,get_option('date_format')),
                     'data_type'         => 'text',
                     'label'             => __('Date','wdr-omnibus-directive'),
                     'desc_tip'          => true,
@@ -185,7 +185,8 @@ class Helper {
                 if(isset($discount['total_discount_details']) && !empty($discount['total_discount_details'])){
                     $rules = \Wdr\App\Controllers\DiscountCalculator::$rules;
                     $rule_ids = array_keys($discount['total_discount_details']);
-                    $selected_rules = !empty(get_option('_awdr_om_selected_rules')) ? get_option('_awdr_om_selected_rules') : array();
+                    $get_selected_rules = get_option('_awdr_od_selected_rules');
+                    $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
                     foreach ($rule_ids as $rule_id) {
                         if(isset($rules[$rule_id])) {
                             $matched_rule = $rules[$rule_id]->rule; // Here we get the matched rule info

@@ -26,12 +26,13 @@ if (!defined('ABSPATH')) {
                             <?php
                             if(class_exists('\Wdr\App\Controllers\ManageDiscount')){
                                 $rules = \Wdr\App\Controllers\ManageDiscount::$available_rules;
-                                $selected_rules = !empty(get_option('_awdr_om_selected_rules')) ? get_option('_awdr_om_selected_rules') : array();
+                                $get_selected_rules = get_option('_awdr_od_selected_rules');
+                                $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
                                 foreach ($rules as $available_rule){
                                     $selected = in_array($available_rule->rule->id,$selected_rules) ? "selected" : "" ;
                                     $discount_type = $available_rule->rule->discount_type;
                                     if($available_rule->rule->discount_type == 'wdr_simple_discount' && $available_rule->rule->enabled == 1 ){
-                                        echo '<option  '.$selected.'  value="'.$available_rule->rule->id.'">' . $available_rule->rule->title . '</option>';
+                                        echo '<option  '.esc_html($selected).'  value="'.esc_attr($available_rule->rule->id).'">' . esc_html($available_rule->rule->title) . '</option>';
                                     }
                                 }
                             }
@@ -72,11 +73,11 @@ if (!defined('ABSPATH')) {
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('You can use the following shortcode', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{price}} -> Replace the lowest price', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{date}} -> Display the day when was lowest price', 'wdr-omnibus-directive'); ?></span>
-                        <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>: Preview lowest price: {price}.', 'wdr-omnibus-directive'); ?></span>
+                        <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>: Preview lowest price was {{price}} updated from {{date}}', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
                         <?php $message = isset($message) && !empty($message)? $message : "Preview lowest price was {{price}} updated from {{date}}"; ?>
-                        <textarea name="awdr_om_message" rows="5"  cols="30" > <?php _e($message, 'wdr-omnibus-directive'); ?> </textarea>
+                        <textarea name="awdr_od_message" rows="5"  cols="30" > <?php _e($message, 'wdr-omnibus-directive'); ?> </textarea>
                     </td>
                 </tr>
                 <tr class="hide_table_position" id="wdr_od_override_omnibus_message" style="<?php echo empty($show_omnibus_message) || empty($is_omnibus_plugin_active) ? 'display:none' : ''; ?>" >
@@ -112,6 +113,7 @@ if (!defined('ABSPATH')) {
                 </tbody>
             </table>
             <br>
+            <?php wp_nonce_field('awdr_od_action_nonce', 'awdr_od_name_nonce'); ?>
             <input class="button button-primary" type="submit" name="awdr-od-submit" value="Submit">
         </form>
     </div>
