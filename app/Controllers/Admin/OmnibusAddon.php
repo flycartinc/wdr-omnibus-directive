@@ -31,7 +31,7 @@ class OmnibusAddon extends Base {
         $section = $this->input->get('section');
         $number_of_days = get_option('_awdr_price_lowest_days');
         $show_omnibus_message = get_option('_awdr_show_omnibus_message');
-        $message = get_option('_awdr_om_message');
+        $message = get_option('_awdr_od_message');
         $is_override_omnibus_message = get_option('_is_override_omnibus_message');
         $position_to_show_message = get_option('_awdr_position_to_show_message');
         $is_omnibus_plugin_active = self::$helper->isOmnibusPluginActive();
