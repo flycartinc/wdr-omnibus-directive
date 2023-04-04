@@ -18,11 +18,11 @@ if (!defined('ABSPATH')) {
                 <tbody style="background-color: #fff;">
                 <tr>
                     <td>
-                        <label for="" class="awdr-left-align"><?php _e('Select rules', 'wdr-omnibus-directive') ?></label>
+                        <label class="awdr-left-align"><?php _e('Select rules', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Select the product adjustment rules', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
-                        <select class="awdr-od-select-rules" data-placeholder="<?php esc_attr_e(" Select rules here ", 'wdr-omnibus-directive');?>" name="selected_rules[]" multiple="true" >
+                        <select class="wdr-search-box awdr-od-select-rules" data-placeholder="<?php esc_attr_e(" Select rules here ", 'wdr-omnibus-directive');?>" name="selected_rules[]" multiple="true" >
                             <?php
                             if(class_exists('\Wdr\App\Controllers\ManageDiscount')){
                                 $rules = \Wdr\App\Controllers\ManageDiscount::$available_rules;
@@ -56,14 +56,14 @@ if (!defined('ABSPATH')) {
                     </td>
                     <td>
                         <input type="radio" data-name="hide_table_position" name="show_omnibus_message_option"
-                               value="1"
+                               id="show_omnibus_message_option_1" value="1"
                             <?php echo(!empty($show_omnibus_message) ? 'checked' : '')  ?>><label
-                        ><?php _e('Yes', 'wdr-omnibus-directive'); ?></label>
+                        for="show_omnibus_message_option_1"><?php _e('Yes', 'wdr-omnibus-directive'); ?></label>
 
                         <input type="radio" data-name="hide_table_position" name="show_omnibus_message_option"
-                               value="0"
+                               id="show_omnibus_message_option_0" value="0"
                             <?php echo(empty($show_omnibus_message) ? 'checked' : '') ?>><label
-                        ><?php _e('No', 'wdr-omnibus-directive'); ?></label>
+                        for="show_omnibus_message_option_0"><?php _e('No', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
 
@@ -80,18 +80,18 @@ if (!defined('ABSPATH')) {
                         <textarea name="awdr_od_message" rows="5"  cols="30" > <?php _e($message, 'wdr-omnibus-directive'); ?> </textarea>
                     </td>
                 </tr>
-                <tr class="hide_table_position" id="wdr_od_override_omnibus_message" style="<?php echo empty($show_omnibus_message) || empty($is_omnibus_plugin_active) ? 'display:none' : ''; ?>" >
+                <tr class="hide_table_position" id="<?php echo empty($is_omnibus_plugin_active) ? 'wdr_od_override_omnibus_message_hide' : 'wdr_od_override_omnibus_message_show'; ?>" style="<?php echo empty($show_omnibus_message) || empty($is_omnibus_plugin_active) ? 'display:none' : ''; ?>" >
                     <td>
                     </td>
                     <td>
                         <?php $is_override_omnibus_message = isset($is_override_omnibus_message) ? $is_override_omnibus_message : 0; ?>
-                        <input type="checkbox" name="is_override_omnibus_message" value="1" <?php echo ( $is_override_omnibus_message == 1 ? 'checked' : '') ?>>
-                        <label><?php _e('Override the message displayed by Omnibus plugin', 'wdr-omnibus-directive'); ?></label>
+                        <input type="checkbox" name="is_override_omnibus_message" id="is_override_omnibus_message" value="1" <?php echo ( $is_override_omnibus_message == 1 ? 'checked' : '') ?>>
+                        <label for="is_override_omnibus_message"><?php _e('Override the message displayed by Omnibus plugin', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
                 <tr class="hide_table_position" id="wdr_od_select_message_position" style="<?php echo empty($show_omnibus_message) ? 'display:none' : ''; ?>" >
                     <td>
-                        <label for="" class="awdr-left-align"><?php _e('Position to show message', 'wdr-omnibus-directive') ?></label>
+                        <label class="awdr-left-align"><?php _e('Position to show message', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Position to show message on product page', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
