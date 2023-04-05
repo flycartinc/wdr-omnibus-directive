@@ -52,5 +52,16 @@ class Route
         add_filter('advanced_woo_discount_rules_page_addons', array(self::$helper, 'omnibusAddon'));
         add_action('admin_init',array(self::$admin, 'saveSettingsData'));
         add_action('admin_enqueue_scripts', array(self::$admin,'scriptFiles'));
+
+        if (isset($_GET['saved'])) {
+            $message = $_GET['saved'];
+            switch ($message) {
+                case $message == "true":
+                    add_action('admin_notices', array(self::$admin,'successNotice'));
+                    break;
+                case $message == "false":
+                    add_action('admin_notices', array(self::$admin,'errorNotice'));
+            }
+        }
     }
 }

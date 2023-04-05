@@ -35,6 +35,7 @@ class OmnibusAddon extends Base {
         $is_override_omnibus_message = get_option('_is_override_omnibus_message');
         $position_to_show_message = get_option('_awdr_position_to_show_message');
         $is_omnibus_plugin_active = self::$helper->isOmnibusPluginActive();
+        $check_enabled_rules = self::$helper->checkRuleEnabled();
 
         $params = array(
             'section' => $section,
@@ -44,6 +45,7 @@ class OmnibusAddon extends Base {
             'is_override_omnibus_message' => $is_override_omnibus_message,
             'position_to_show_message' => $position_to_show_message,
             'is_omnibus_plugin_active' => $is_omnibus_plugin_active,
+            'check_enabled_rules' => $check_enabled_rules,
         );
         self::$template_helper->setPath(WDR_OD_PLUGIN_PATH . 'app/Views/Admin/OmnibusAddon.php')->setData($params)->display();
     }
