@@ -28,7 +28,24 @@ class Helper {
         $awdr_days = get_option('_awdr_price_lowest_days');
 
         $sale_price = $product->get_price();
-        $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $sale_price, $product, 1, 0, 'discounted_price', true, false);
+        if ($product->get_type() == 'variable') {
+            $discount_price = array();
+            $min_discounted_price = 0;
+            $available_variations = $product->get_variation_prices();
+            foreach ($available_variations['regular_price'] as $key => $regular_price) {
+                if (function_exists('wc_get_product')) {
+                    $product_variation = wc_get_product($key);
+                    $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', false, $product_variation, 1, 0, 'discounted_price', true, false);
+                    if (isset($discount) && $discount !== false) {
+                        $discount_price[] = $discount;
+                        $min_discounted_price = (min($discount_price));
+                    }
+                }
+            }
+            $discount = $min_discounted_price;
+        } else {
+            $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $sale_price, $product, 1, 0, 'discounted_price', true, false);
+        }
 
         $awdr_price_current = get_post_meta($product_id, '_awdr_price_current', true);
         $awdr_price_history = get_post_meta($product_id, '_awdr_price_history', true);
@@ -178,8 +195,20 @@ class Helper {
      */
     public static function checkRuleId() {
         global $product;
-        $price = $product->get_price();
-        $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $price, $product, 1, 0, 'all', true, false);
+        $discount = false;
+        if ($product->get_type() == 'variable') {
+            $available_variations = $product->get_variation_prices();
+            foreach ($available_variations['regular_price'] as $key => $regular_price) {
+                if (function_exists('wc_get_product')) {
+                    $product_variation = wc_get_product($key);
+                    $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', false, $product_variation, 1, 0, 'all', true, false);
+                }
+            }
+        } else {
+            $price = $product->get_price();
+            $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $price, $product, 1, 0, 'all', true, false);
+        }
+
         if($discount !== false){
             if(class_exists('\Wdr\App\Controllers\DiscountCalculator')) {
                 if(isset($discount['total_discount_details']) && !empty($discount['total_discount_details'])){
