@@ -241,4 +241,29 @@ class Helper {
         }
         return in_array('omnibus/omnibus.php', $active_plugins, false) || array_key_exists('omnibus/omnibus.php', $active_plugins);
     }
+
+    /**
+     * Check the enabled product adjustment rules
+     * @return array
+     */
+    public function checkRuleEnabled()
+    {
+        $check_enabled_rules = array();
+        if (class_exists('\Wdr\App\Controllers\ManageDiscount')) {
+            $rules = \Wdr\App\Controllers\ManageDiscount::$available_rules;
+            $get_selected_rules = get_option('_awdr_od_selected_rules');
+            $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
+            foreach ($rules as $available_rule) {
+                $selected = in_array($available_rule->rule->id, $selected_rules) ? "selected" : "";
+                if ($available_rule->rule->discount_type == 'wdr_simple_discount' && $available_rule->rule->enabled == 1) {
+                    $check_enabled_rules[] = [
+                        'selected' => $selected,
+                        'rule_id' => $available_rule->rule->id,
+                        'rule_title' => $available_rule->rule->title,
+                    ];
+                }
+            }
+        }
+        return $check_enabled_rules;
+    }
 }

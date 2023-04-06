@@ -128,6 +128,12 @@ class Admin
             update_option('_is_override_omnibus_message',$is_override_omnibus_message);
             update_option('_awdr_od_selected_rules',$selected_rules);
             update_option('_awdr_position_to_show_message',$position_to_show_message);
+
+            wp_redirect(add_query_arg('saved', 'true'));
+            exit();
+        } elseif(isset($_POST['awdr-od-submit']) && !wp_verify_nonce($_POST['awdr_od_name_nonce'], 'awdr_od_action_nonce')) {
+            wp_redirect(add_query_arg('saved', 'false'));
+            exit();
         }
     }
 
@@ -150,5 +156,25 @@ class Admin
             'settings' => '<a href="' . esc_url(admin_url('admin.php?page=woo_discount_rules&tab=addons&addon=omnibus_directive&section=settings')) . '">' . __('Settings', 'wdr-omnibus-directive') . '</a>',
         );
         return array_merge($action_links, $links);
+    }
+
+    /**
+     * Settings save successfully message
+     * @return void
+     */
+    function successNotice() {
+        $class = 'notice notice-success';
+        $message = __( 'Saved successfully.', 'sample-text-domain' );
+        printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
+    }
+
+    /**
+     * Settings save failed message
+     * @return void
+     */
+    function errorNotice() {
+        $class = 'notice notice-error';
+        $message = __( 'Error occurred.', 'sample-text-domain' );
+        printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
     }
 }

@@ -22,22 +22,22 @@ if (!defined('ABSPATH')) {
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Select the product adjustment rules', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
+                        <?php if(isset($check_enabled_rules) && is_array($check_enabled_rules)&& !empty($check_enabled_rules)) {
+                        ?>
                         <select class="wdr-search-box awdr-od-select-rules" data-placeholder="<?php esc_attr_e(" Select rules here ", 'wdr-omnibus-directive');?>" name="selected_rules[]" multiple="true" >
                             <?php
-                            if(class_exists('\Wdr\App\Controllers\ManageDiscount')){
-                                $rules = \Wdr\App\Controllers\ManageDiscount::$available_rules;
-                                $get_selected_rules = get_option('_awdr_od_selected_rules');
-                                $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
-                                foreach ($rules as $available_rule){
-                                    $selected = in_array($available_rule->rule->id,$selected_rules) ? "selected" : "" ;
-                                    $discount_type = $available_rule->rule->discount_type;
-                                    if($available_rule->rule->discount_type == 'wdr_simple_discount' && $available_rule->rule->enabled == 1 ){
-                                        echo '<option  '.esc_html($selected).'  value="'.esc_attr($available_rule->rule->id).'">' . esc_html($available_rule->rule->title) . '</option>';
-                                    }
-                                }
+                            foreach ($check_enabled_rules as $check_enabled_rule) {
+                                echo '<option  ' . esc_html($check_enabled_rule['selected']) . '  value="' . esc_attr($check_enabled_rule['rule_id']) . '">' . esc_html($check_enabled_rule['rule_title']) . '</option>';
                             }
                             ?>
                         </select>
+                        <?php
+                        } else {
+                            ?>
+                            <div style="color:#ff6700">Currently we support only for the Discount type: Product Adjustment.</div>
+                            <div style="color:#ff6700">Seems you doesn't have any active Product adjustment rules.</div>
+                            <?php
+                        } ?>
                     </td>
                 </tr>
                 <tr>
