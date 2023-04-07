@@ -165,7 +165,7 @@ class Helper {
                 array(
                     'id'                => 'awdr_price_history_date',
                     'custom_attributes' => array('disabled' => 'disabled'),
-                    'value'             => empty($timestamp) ? esc_html__('no data', 'wdr-omnibus-directive') : get_date_from_gmt($timestamp,get_option('date_format')),
+                    'value'             => empty($timestamp) ? esc_html__('no data', 'wdr-omnibus-directive') : date_i18n(get_option('date_format'),$timestamp),
                     'data_type'         => 'text',
                     'label'             => __('Date','wdr-omnibus-directive'),
                     'desc_tip'          => true,
