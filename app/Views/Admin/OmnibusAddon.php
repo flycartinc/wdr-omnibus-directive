@@ -13,12 +13,12 @@ if (!defined('ABSPATH')) {
 <div id="wpbody-content" class="awdr-container">
     <div class="awdr-configuration-form">
         <form id="wdr-od-configuration-form" method="post">
-            <h1><?php _e('Omnibus Directive : General settings', 'wdr-omnibus-directive') ?></h1>
+            <h1><?php esc_attr_e('Omnibus Directive : General settings', 'wdr-omnibus-directive') ?></h1>
             <table class="wdr-general-setting form-table">
                 <tbody style="background-color: #fff;">
                 <tr>
                     <td>
-                        <label class="awdr-left-align"><?php _e('Select rules', 'wdr-omnibus-directive') ?></label>
+                        <label class="awdr-left-align"><?php esc_attr_e('Select rules', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Select the product adjustment rules', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
@@ -42,42 +42,42 @@ if (!defined('ABSPATH')) {
                 </tr>
                 <tr>
                     <td>
-                        <label class="awdr-left-align"><?php _e('Number of days', 'wdr-omnibus-directive') ?></label>
+                        <label class="awdr-left-align"><?php esc_attr_e('Number of days', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Record and display number of days after sale was started', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
-                        <input type="number" name="wdr-od-number-of-days" value="<?php echo !empty($number_of_days) ? $number_of_days : 30;?>" title="Number of days" size="4" min="30" max="" step="1" >
+                        <input type="number" name="wdr-od-number-of-days" value="<?php echo !empty($number_of_days) ? esc_attr_e($number_of_days) : 30;?>" title="Number of days" size="4" min="30" max="" step="1" >
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label class="awdr-left-align"><?php _e('Show Omnibus message on product page', 'wdr-omnibus-directive') ?></label>
+                        <label class="awdr-left-align"><?php esc_attr_e('Show Omnibus message on product page', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Hide the message from omnibus plugin', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
                         <input type="radio" data-name="hide_table_position" name="wdr-od-is-show-message-option"
                                id="show_omnibus_message_option_1" value="1"
                             <?php echo(!empty($show_omnibus_message) ? 'checked' : '')  ?>><label
-                        for="show_omnibus_message_option_1"><?php _e('Yes', 'wdr-omnibus-directive'); ?></label>
+                        for="show_omnibus_message_option_1"><?php esc_attr_e('Yes', 'wdr-omnibus-directive'); ?></label>
 
                         <input type="radio" data-name="hide_table_position" name="wdr-od-is-show-message-option"
                                id="show_omnibus_message_option_0" value="0"
                             <?php echo(empty($show_omnibus_message) ? 'checked' : '') ?>><label
-                        for="show_omnibus_message_option_0"><?php _e('No', 'wdr-omnibus-directive'); ?></label>
+                        for="show_omnibus_message_option_0"><?php esc_attr_e('No', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
 
                 <tr class="hide_table_position" id="wdr_od_omnibus_message" style="<?php echo empty($show_omnibus_message) ? 'display:none' : ''; ?>">
                     <td>
-                        <label class="awdr-left-align"><?php _e('Omnibus Message', 'wdr-omnibus-directive') ?></label>
+                        <label class="awdr-left-align"><?php esc_attr_e('Omnibus Message', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('You can use the following shortcode', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{price}} -> Replace the lowest price', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{date}} -> Display the day when was lowest price', 'wdr-omnibus-directive'); ?></span>
-                        <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>: Preview lowest price was {{price}} updated from {{date}}', 'wdr-omnibus-directive'); ?></span>
+                        <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('<strong>Eg</strong>: Preview lowest price was {{price}} updated from {{date}}', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
                         <?php $message = isset($message) && !empty($message)? $message : "Preview lowest price was {{price}} updated from {{date}}"; ?>
-                        <textarea name="wdr_od_message" rows="5"  cols="30" > <?php _e($message, 'wdr-omnibus-directive'); ?> </textarea>
+                        <textarea name="wdr_od_message" rows="5"  cols="30" > <?php esc_attr_e($message, 'wdr-omnibus-directive'); ?> </textarea>
                     </td>
                 </tr>
                 <tr class="hide_table_position" id="<?php echo empty($is_omnibus_plugin_active) ? 'wdr_od_override_omnibus_message_hide' : 'wdr_od_override_omnibus_message_show'; ?>" style="<?php echo empty($show_omnibus_message) || empty($is_omnibus_plugin_active) ? 'display:none' : ''; ?>" >
@@ -86,27 +86,27 @@ if (!defined('ABSPATH')) {
                     <td>
                         <?php $is_override_omnibus_message = isset($is_override_omnibus_message) ? $is_override_omnibus_message : 0; ?>
                         <input type="checkbox" name="wdr-od-is-override-omnibus-message" id="wdr-od-is-override-omnibus-message" value="1" <?php echo ( $is_override_omnibus_message == 1 ? 'checked' : '') ?>>
-                        <label for="wdr-od-is-override-omnibus-message"><?php _e('Override the message displayed by Omnibus plugin', 'wdr-omnibus-directive'); ?></label>
+                        <label for="wdr-od-is-override-omnibus-message"><?php esc_attr_e('Override the message displayed by Omnibus plugin', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
                 <tr class="hide_table_position" id="wdr_od_select_message_position" style="<?php echo empty($show_omnibus_message) ? 'display:none' : ''; ?>" >
                     <td>
-                        <label class="awdr-left-align"><?php _e('Position to show message', 'wdr-omnibus-directive') ?></label>
+                        <label class="awdr-left-align"><?php esc_attr_e('Position to show message', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Position to show message on product page', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
                         <select name="wdr-od-position-to-show-message">
-                            <option value="woocommerce_single_product_summary" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_single_product_summary' ? 'selected' : ''; ?>><?php _e('woocommerce_single_product_summary', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_before_add_to_cart_form" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_add_to_cart_form' ? 'selected' : ''; ?>><?php _e('woocommerce_before_add_to_cart_form', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_product_meta_end" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_product_meta_end' ? 'selected' : ''; ?>><?php _e('woocommerce_product_meta_end', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_product_meta_start" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_product_meta_start' ? 'selected' : ''; ?>><?php _e('woocommerce_product_meta_start', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_before_add_to_cart_button" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_add_to_cart_button' ? 'selected' : ''; ?>><?php _e('woocommerce_before_add_to_cart_button', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_after_add_to_cart_quantity" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_after_add_to_cart_quantity' ? 'selected' : ''; ?>><?php _e('woocommerce_after_add_to_cart_quantity', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_after_add_to_cart_form" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_after_add_to_cart_form' ? 'selected' : ''; ?>><?php _e('woocommerce_after_add_to_cart_form', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_after_single_product" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_after_single_product' ? 'selected' : ''; ?>><?php _e('woocommerce_after_single_product', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_before_single_product" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_single_product' ? 'selected' : ''; ?>><?php _e('woocommerce_before_single_product', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_after_single_product_summary" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_after_single_product_summary' ? 'selected' : ''; ?>><?php _e('woocommerce_after_single_product_summary', 'wdr-omnibus-directive'); ?></option>
-                            <option value="woocommerce_before_single_product_summary" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_single_product_summary' ? 'selected' : ''; ?>><?php _e('woocommerce_before_single_product_summary', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_single_product_summary" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_single_product_summary' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_single_product_summary', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_before_add_to_cart_form" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_add_to_cart_form' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_before_add_to_cart_form', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_product_meta_end" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_product_meta_end' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_product_meta_end', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_product_meta_start" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_product_meta_start' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_product_meta_start', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_before_add_to_cart_button" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_add_to_cart_button' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_before_add_to_cart_button', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_after_add_to_cart_quantity" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_after_add_to_cart_quantity' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_after_add_to_cart_quantity', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_after_add_to_cart_form" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_after_add_to_cart_form' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_after_add_to_cart_form', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_after_single_product" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_after_single_product' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_after_single_product', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_before_single_product" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_single_product' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_before_single_product', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_after_single_product_summary" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_after_single_product_summary' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_after_single_product_summary', 'wdr-omnibus-directive'); ?></option>
+                            <option value="woocommerce_before_single_product_summary" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_single_product_summary' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_before_single_product_summary', 'wdr-omnibus-directive'); ?></option>
                         </select>
                     </td>
                 </tr>

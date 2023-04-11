@@ -78,7 +78,7 @@ class Admin
             return '';
         }
         $message = apply_filters('advanced_woo_discount_rules_omnibus_directive_message', $message, $min_price, $lowest_price_date);
-        _e($message, 'wdr-omnibus-directive');
+        esc_attr_e($message, 'wdr-omnibus-directive');
     }
 
     /**
@@ -115,25 +115,26 @@ class Admin
      * @return void
      */
     public static function saveSettingsData() {
-        if(isset($_POST['wdr-od-submit']) && wp_verify_nonce($_POST['wdr_od_nonce_name'], 'wdr_od_nonce_action')) {
-            $updated_days = isset($_POST['wdr-od-number-of-days']) && is_numeric($_POST['wdr-od-number-of-days']) && $_POST['wdr-od-number-of-days'] >= 30 ? $_POST['wdr-od-number-of-days'] : 30;
-            $show_omnibus_message_option = isset($_POST['wdr-od-is-show-message-option']) && is_numeric($_POST['wdr-od-is-show-message-option']) ? $_POST['wdr-od-is-show-message-option'] : 0;
-            $message = isset($_POST['wdr_od_message']) ? sanitize_textarea_field($_POST['wdr_od_message']) : null;
-            $is_override_omnibus_message = isset($_POST['wdr-od-is-override-omnibus-message']) && is_numeric($_POST['wdr-od-is-override-omnibus-message']) ? $_POST['wdr-od-is-override-omnibus-message'] : 0;
-            $selected_rules = isset($_POST['wdr-od-selected_rules']) && is_array($_POST['wdr-od-selected_rules']) ? $_POST['wdr-od-selected_rules'] : array();
-            $position_to_show_message = isset($_POST['wdr-od-position-to-show-message']) ? sanitize_text_field($_POST['wdr-od-position-to-show-message']) : 'woocommerce_single_product_summary';
+        if(isset($_POST['wdr-od-submit'])) {
+            if (wp_verify_nonce($_POST['wdr_od_nonce_name'], 'wdr_od_nonce_action')) {
+                $updated_days = isset($_POST['wdr-od-number-of-days']) && is_numeric($_POST['wdr-od-number-of-days']) && $_POST['wdr-od-number-of-days'] >= 30 ? $_POST['wdr-od-number-of-days'] : 30;
+                $show_omnibus_message_option = isset($_POST['wdr-od-is-show-message-option']) && is_numeric($_POST['wdr-od-is-show-message-option']) ? $_POST['wdr-od-is-show-message-option'] : 0;
+                $message = isset($_POST['wdr_od_message']) ? sanitize_textarea_field($_POST['wdr_od_message']) : null;
+                $is_override_omnibus_message = isset($_POST['wdr-od-is-override-omnibus-message']) && is_numeric($_POST['wdr-od-is-override-omnibus-message']) ? $_POST['wdr-od-is-override-omnibus-message'] : 0;
+                $selected_rules = isset($_POST['wdr-od-selected_rules']) && is_array($_POST['wdr-od-selected_rules']) ? $_POST['wdr-od-selected_rules'] : array();
+                $position_to_show_message = isset($_POST['wdr-od-position-to-show-message']) ? sanitize_text_field($_POST['wdr-od-position-to-show-message']) : 'woocommerce_single_product_summary';
 
-            update_option('_wdr_od_number_of_days',$updated_days);
-            update_option('_wdr_od_is_show_omnibus_message',$show_omnibus_message_option);
-            update_option('_wdr_od_message',$message);
-            update_option('_wdr_od_is_override_omnibus_message',$is_override_omnibus_message);
-            update_option('_wdr_od_selected_rules',$selected_rules);
-            update_option('_wdr_od_position_to_show_message',$position_to_show_message);
+                update_option('_wdr_od_number_of_days', $updated_days);
+                update_option('_wdr_od_is_show_omnibus_message', $show_omnibus_message_option);
+                update_option('_wdr_od_message', $message);
+                update_option('_wdr_od_is_override_omnibus_message', $is_override_omnibus_message);
+                update_option('_wdr_od_selected_rules', $selected_rules);
+                update_option('_wdr_od_position_to_show_message', $position_to_show_message);
 
-            wp_redirect(add_query_arg('saved', 'true'));
-            exit();
-        } elseif(isset($_POST['wdr-od-submit']) && !wp_verify_nonce($_POST['wdr_od_nonce_name'], 'wdr_od_nonce_action')) {
-            wp_redirect(add_query_arg('saved', 'false'));
+                wp_safe_redirect(add_query_arg('saved', 'true'));
+            } else {
+                wp_safe_redirect(add_query_arg('saved', 'false'));
+            }
             exit();
         }
     }
