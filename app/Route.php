@@ -30,7 +30,7 @@ class Route
         self::$admin = empty( self::$admin) ? new Admin() : self::$admin;
         self::$helper = empty( self::$helper) ? new Helper() : self::$helper;
 
-        $is_override_omnibus_message = get_option('_is_override_omnibus_message');
+        $is_override_omnibus_message = get_option('_wdr_od_is_override_omnibus_message');
         $is_omnibus_plugin_active = self::$helper->isOmnibusPluginActive();
         $is_override_omnibus_message = isset($is_override_omnibus_message) ? $is_override_omnibus_message : 0;
         $is_omnibus_plugin_active = isset($is_omnibus_plugin_active) ? $is_omnibus_plugin_active : 0;
@@ -38,9 +38,10 @@ class Route
         if($is_override_omnibus_message == 1 && $is_omnibus_plugin_active == 1){
             add_filter('iworks_omnibus_message_template', array(self::$admin, 'mergeOmnibusMessageWithDiscountRule'), 10, 3);
         } else {
-            $show_omnibus_message = get_option('_awdr_show_omnibus_message');
+            $show_omnibus_message = get_option('_wdr_od_is_show_omnibus_message');
             if(isset($show_omnibus_message) && !empty($show_omnibus_message)){
-                $position_to_show_message = is_string(get_option('_awdr_position_to_show_message')) ? get_option('_awdr_position_to_show_message') : "woocommerce_single_product_summary";
+                $position_to_show_message = get_option('_wdr_od_position_to_show_message');
+                $position_to_show_message = is_string($position_to_show_message) ? $position_to_show_message : "woocommerce_single_product_summary";
                 $position_to_show_message = apply_filters('advanced_woo_discount_rules_omnibus_directive_show_message_position', $position_to_show_message);
                 add_filter($position_to_show_message, array(self::$admin, 'separateOmnibusMessageForDiscountRule'));
             }

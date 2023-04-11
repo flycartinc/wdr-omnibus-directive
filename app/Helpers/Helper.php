@@ -21,11 +21,11 @@ class Helper {
      * Get and update minimum price
      * @return int|mixed
      */
-    public function omnibusForDiscountRules() {
+    public function getAndUpdateMinimumPrice() {
 
         global $product;
         $product_id = $product->get_id();
-        $awdr_days = get_option('_awdr_price_lowest_days');
+        $number_of_days = get_option('_wdr_od_number_of_days');
 
         $sale_price = $product->get_price();
         if ($product->get_type() == 'variable') {
@@ -47,65 +47,65 @@ class Helper {
             $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $sale_price, $product, 1, 0, 'discounted_price', true, false);
         }
 
-        $awdr_price_current = get_post_meta($product_id, '_awdr_price_current', true);
-        $awdr_price_history = get_post_meta($product_id, '_awdr_price_history', true);
+        $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
+        $wdr_od_price_history = get_post_meta($product_id, '_wdr_od_price_history', true);
 
-        // Update the current price in _awdr_price_current meta key
-        if (!empty($discount) && empty($awdr_price_current)) {
-            $awdr_price_current_update = [
+        // Update the current price in _wdr_od_price_current meta key
+        if (!empty($discount) && empty($wdr_od_price_current)) {
+            $wdr_od_price_current_update = [
                 'price' => $discount,
                 'timestamp' => current_time('timestamp', true),
             ];
-            update_post_meta($product_id, '_awdr_price_current', $awdr_price_current_update);
+            update_post_meta($product_id, '_wdr_od_price_current', $wdr_od_price_current_update);
         }
 
-        if(!empty($awdr_price_current)) {
-            $current_price_time_difference = current_time('timestamp', true) - $awdr_price_current['timestamp'];
-            if ($current_price_time_difference > $awdr_days * 24 * 60 * 60) {
-                delete_post_meta($product_id, '_awdr_price_current');
+        if(!empty($wdr_od_price_current)) {
+            $current_price_time_difference = current_time('timestamp', true) - $wdr_od_price_current['timestamp'];
+            if ($current_price_time_difference > $number_of_days * 24 * 60 * 60) {
+                delete_post_meta($product_id, '_wdr_od_price_current');
             }
         }
 
-        if(empty($awdr_price_history)){
-            $awdr_price_history = array();
+        if(empty($wdr_od_price_history)){
+            $wdr_od_price_history = array();
         }
 
-        foreach ( $awdr_price_history as $key => $awdr_price_history_data ) {
-            $history_price_time_difference = current_time('timestamp', true) - $awdr_price_history_data['timestamp'];
-            if($history_price_time_difference > $awdr_days * 24 * 60 * 60 ) { //$awdr_days * 24 * 60 * 60
-                unset($awdr_price_history[$key]);
-                update_post_meta($product_id, '_awdr_price_history', $awdr_price_history);
+        foreach ( $wdr_od_price_history as $key => $wdr_od_price_history_data ) {
+            $history_price_time_difference = current_time('timestamp', true) - $wdr_od_price_history_data['timestamp'];
+            if($history_price_time_difference > $number_of_days * 24 * 60 * 60 ) { //$number_of_days * 24 * 60 * 60
+                unset($wdr_od_price_history[$key]);
+                update_post_meta($product_id, '_wdr_od_price_history', $wdr_od_price_history);
             }
         }
 
-        // Update the price history in _awdr_price_history meta key
-        if (!empty($discount) && !empty($awdr_price_current['price']) && $discount < $awdr_price_current['price']) {
+        // Update the price history in _wdr_od_price_history meta key
+        if (!empty($discount) && !empty($wdr_od_price_current['price']) && $discount < $wdr_od_price_current['price']) {
 
-            $awdr_price_history_update = [
-                'price' => $awdr_price_current['price'],
+            $wdr_od_price_history_update = [
+                'price' => $wdr_od_price_current['price'],
                 'timestamp' => current_time('timestamp', true),
             ];
 
-            $awdr_price_current_update = [
+            $wdr_od_price_current_update = [
                 'price' => $discount,
                 'timestamp' => current_time('timestamp', true),
             ];
 
-            $awdr_price_history[] = $awdr_price_history_update;
-            sort($awdr_price_history);
+            $wdr_od_price_history[] = $wdr_od_price_history_update;
+            sort($wdr_od_price_history);
 
-            update_post_meta($product_id, '_awdr_price_current', $awdr_price_current_update);
-            update_post_meta($product_id, '_awdr_price_history', $awdr_price_history);
+            update_post_meta($product_id, '_wdr_od_price_current', $wdr_od_price_current_update);
+            update_post_meta($product_id, '_wdr_od_price_history', $wdr_od_price_history);
         }
 
-        if(!empty($awdr_price_history) && is_array($awdr_price_history)){
-            $prices = array_column($awdr_price_history, 'price');
+        if(!empty($wdr_od_price_history) && is_array($wdr_od_price_history)){
+            $prices = array_column($wdr_od_price_history, 'price');
             $min_price = min($prices);
         }
 
-        foreach ($awdr_price_history as $awdr_price_history_data) {
-            if(isset($min_price) && $awdr_price_history_data['price'] == $min_price){
-                $this->date = $awdr_price_history_data['timestamp'];
+        foreach ($wdr_od_price_history as $wdr_od_price_history_data) {
+            if(isset($min_price) && $wdr_od_price_history_data['price'] == $min_price){
+                $this->date = $wdr_od_price_history_data['timestamp'];
                 break;
             }
         }
@@ -117,7 +117,7 @@ class Helper {
      * @param $class
      * @return void
      */
-    public static function print_header($class = '') {
+    public static function headerForShowLowestPriceInProductEditPage($class = '') {
         printf(
             '<h3%s>%s</h3>',
             empty($class) ? '' : sprintf(' class="%s"', esc_attr($class)),
@@ -128,15 +128,15 @@ class Helper {
     /**
      * Price input field for show the lowest price of the product in product edit page
      * @param $price_lowest
+     * @param $number_of_days
      * @param $configuration
      * @return void
      */
-    public static function woocommerce_wp_text_input_price($price_lowest, $configuration = array()) {
-        $awdr_days = get_option('_awdr_price_lowest_days');
+    public static function showLowestPreviewPriceInProductEditPage($price_lowest, $number_of_days, $configuration = array()) {
         woocommerce_wp_text_input(
             wp_parse_args(
                 array(
-                    'id'                => 'awdr_price_history_price',
+                    'id'                => 'wdr-od-price-history-price',
                     'custom_attributes' => array('disabled' => 'disabled'),
                     'value'             => empty($price_lowest) ? __('no data', 'wdr-omnibus-directive') : $price_lowest,
                     'data_type'         => 'price',
@@ -144,7 +144,7 @@ class Helper {
                     'desc_tip'          => true,
                     'description'       => sprintf(
                         __('The lowest price in %d days.','wdr-omnibus-directive'),
-                        $awdr_days
+                        $number_of_days
                     ),
                 ),
                 $configuration
@@ -155,15 +155,15 @@ class Helper {
     /**
      * Date input field for show the lowest price edit date in product edit page
      * @param $timestamp
+     * @param $number_of_days
      * @param $configuration
      * @return void
      */
-    public static function woocommerce_wp_text_input_date($timestamp, $configuration = array()) {
-        $awdr_days = get_option('_awdr_price_lowest_days');
+    public static function showLowestPreviewPriceDateInProductEditPage($timestamp, $number_of_days, $configuration = array()) {
         woocommerce_wp_text_input(
             wp_parse_args(
                 array(
-                    'id'                => 'awdr_price_history_date',
+                    'id'                => 'wdr-od-price-history-date',
                     'custom_attributes' => array('disabled' => 'disabled'),
                     'value'             => empty($timestamp) ? esc_html__('no data', 'wdr-omnibus-directive') : date_i18n(get_option('date_format'),$timestamp),
                     'data_type'         => 'text',
@@ -171,7 +171,7 @@ class Helper {
                     'desc_tip'          => true,
                     'description'       => sprintf(
                         __('The date when lowest price in %d days occurred.', 'wdr-omnibus-directive'),
-                        $awdr_days
+                        $number_of_days
                     ),
                 ),
                 $configuration
@@ -214,7 +214,7 @@ class Helper {
                 if(isset($discount['total_discount_details']) && !empty($discount['total_discount_details'])){
                     $rules = \Wdr\App\Controllers\DiscountCalculator::$rules;
                     $rule_ids = array_keys($discount['total_discount_details']);
-                    $get_selected_rules = get_option('_awdr_od_selected_rules');
+                    $get_selected_rules = get_option('_wdr_od_selected_rules');
                     $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
                     foreach ($rule_ids as $rule_id) {
                         if(isset($rules[$rule_id])) {
@@ -251,7 +251,7 @@ class Helper {
         $check_enabled_rules = array();
         if (class_exists('\Wdr\App\Controllers\ManageDiscount')) {
             $rules = \Wdr\App\Controllers\ManageDiscount::$available_rules;
-            $get_selected_rules = get_option('_awdr_od_selected_rules');
+            $get_selected_rules = get_option('_wdr_od_selected_rules');
             $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
             foreach ($rules as $available_rule) {
                 $selected = in_array($available_rule->rule->id, $selected_rules) ? "selected" : "";

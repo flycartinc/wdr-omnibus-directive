@@ -40,11 +40,11 @@ class Admin
             return $message;
         }
 
-        $min_price = self::$helper->omnibusForDiscountRules();
+        $min_price = self::$helper->getAndUpdateMinimumPrice();
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : 0;
         if (!empty($min_price)) {
-            $custom_message = get_option('_awdr_od_message');
+            $custom_message = get_option('_wdr_od_message');
             $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
             $date_format = apply_filters('advanced_woo_discount_rules_omnibus_directive_message_date_format_for_omnibus',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
@@ -64,16 +64,16 @@ class Admin
             return '';
         }
 
-        $min_price = self::$helper->omnibusForDiscountRules();
+        $min_price = self::$helper->getAndUpdateMinimumPrice();
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : 0;
         if (!empty($min_price)) {
-            $custom_message = get_option('_awdr_od_message');
+            $custom_message = get_option('_wdr_od_message');
             $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
             $date_format = apply_filters('advanced_woo_discount_rules_omnibus_directive_message_date_format',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
             $message = str_replace('{{date}}', $date_format, $message);
-            $message = '<div class="awdr-od-message">' . $message . '</div>';
+            $message = '<div class="wdr-od-message">' . $message . '</div>';
         } else {
             return '';
         }
@@ -89,23 +89,24 @@ class Admin
 
         global $post;
         $id = $post->ID;
-        $awdr_price_history = get_post_meta($id, '_awdr_price_history', true);
+        $price_history = get_post_meta($id, '_wdr_od_price_history', true);
 
-        if(!empty($awdr_price_history) && is_array($awdr_price_history)){
-            $prices = array_column($awdr_price_history, 'price');
+        if(!empty($price_history) && is_array($price_history)){
+            $prices = array_column($price_history, 'price');
             $price_lowest = min($prices);
 
-            foreach ($awdr_price_history as $awdr_price_history_data) {
-                if($awdr_price_history_data['price'] == $price_lowest){
-                    $timestamp = $awdr_price_history_data['timestamp'];
+            foreach ($price_history as $price_history_data) {
+                if($price_history_data['price'] == $price_lowest){
+                    $timestamp = $price_history_data['timestamp'];
                 }
             }
         }
 
         if(isset($price_lowest) && is_numeric($price_lowest) && isset($timestamp) && is_numeric($timestamp)) {
-            self::$helper->print_header('description');
-            self::$helper->woocommerce_wp_text_input_price($price_lowest);
-            self::$helper->woocommerce_wp_text_input_date($timestamp);
+            $number_of_days = get_option('_wdr_od_number_of_days');
+            self::$helper->headerForShowLowestPriceInProductEditPage('description');
+            self::$helper->showLowestPreviewPriceInProductEditPage($price_lowest, $number_of_days);
+            self::$helper->showLowestPreviewPriceDateInProductEditPage($timestamp, $number_of_days);
         }
     }
 
@@ -114,24 +115,24 @@ class Admin
      * @return void
      */
     public static function saveSettingsData() {
-        if(isset($_POST['awdr-od-submit']) && wp_verify_nonce($_POST['awdr_od_name_nonce'], 'awdr_od_action_nonce')) {
-            $updated_days = isset($_POST['awdr_refresh_date']) && is_numeric($_POST['awdr_refresh_date']) && $_POST['awdr_refresh_date'] >= 30 ? $_POST['awdr_refresh_date'] : 30;
-            $show_omnibus_message_option = isset($_POST['show_omnibus_message_option']) && is_numeric($_POST['show_omnibus_message_option']) ? $_POST['show_omnibus_message_option'] : 0;
-            $message = isset($_POST['awdr_od_message']) ? sanitize_textarea_field($_POST['awdr_od_message']) : null;
-            $is_override_omnibus_message = isset($_POST['is_override_omnibus_message']) && is_numeric($_POST['is_override_omnibus_message']) ? $_POST['is_override_omnibus_message'] : 0;
-            $selected_rules = isset($_POST['selected_rules']) && is_array($_POST['selected_rules']) ? $_POST['selected_rules'] : array();
-            $position_to_show_message = isset($_POST['position_to_show_message']) ? sanitize_text_field($_POST['position_to_show_message']) : 'woocommerce_single_product_summary';
+        if(isset($_POST['wdr-od-submit']) && wp_verify_nonce($_POST['wdr_od_nonce_name'], 'wdr_od_nonce_action')) {
+            $updated_days = isset($_POST['wdr-od-number-of-days']) && is_numeric($_POST['wdr-od-number-of-days']) && $_POST['wdr-od-number-of-days'] >= 30 ? $_POST['wdr-od-number-of-days'] : 30;
+            $show_omnibus_message_option = isset($_POST['wdr-od-is-show-message-option']) && is_numeric($_POST['wdr-od-is-show-message-option']) ? $_POST['wdr-od-is-show-message-option'] : 0;
+            $message = isset($_POST['wdr_od_message']) ? sanitize_textarea_field($_POST['wdr_od_message']) : null;
+            $is_override_omnibus_message = isset($_POST['wdr-od-is-override-omnibus-message']) && is_numeric($_POST['wdr-od-is-override-omnibus-message']) ? $_POST['wdr-od-is-override-omnibus-message'] : 0;
+            $selected_rules = isset($_POST['wdr-od-selected_rules']) && is_array($_POST['wdr-od-selected_rules']) ? $_POST['wdr-od-selected_rules'] : array();
+            $position_to_show_message = isset($_POST['wdr-od-position-to-show-message']) ? sanitize_text_field($_POST['wdr-od-position-to-show-message']) : 'woocommerce_single_product_summary';
 
-            update_option('_awdr_price_lowest_days',$updated_days);
-            update_option('_awdr_show_omnibus_message',$show_omnibus_message_option);
-            update_option('_awdr_od_message',$message);
-            update_option('_is_override_omnibus_message',$is_override_omnibus_message);
-            update_option('_awdr_od_selected_rules',$selected_rules);
-            update_option('_awdr_position_to_show_message',$position_to_show_message);
+            update_option('_wdr_od_number_of_days',$updated_days);
+            update_option('_wdr_od_is_show_omnibus_message',$show_omnibus_message_option);
+            update_option('_wdr_od_message',$message);
+            update_option('_wdr_od_is_override_omnibus_message',$is_override_omnibus_message);
+            update_option('_wdr_od_selected_rules',$selected_rules);
+            update_option('_wdr_od_position_to_show_message',$position_to_show_message);
 
             wp_redirect(add_query_arg('saved', 'true'));
             exit();
-        } elseif(isset($_POST['awdr-od-submit']) && !wp_verify_nonce($_POST['awdr_od_name_nonce'], 'awdr_od_action_nonce')) {
+        } elseif(isset($_POST['wdr-od-submit']) && !wp_verify_nonce($_POST['wdr_od_nonce_name'], 'wdr_od_nonce_action')) {
             wp_redirect(add_query_arg('saved', 'false'));
             exit();
         }
