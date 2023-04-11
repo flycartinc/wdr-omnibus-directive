@@ -24,7 +24,7 @@ if (!defined('ABSPATH')) {
                     <td>
                         <?php if(isset($check_enabled_rules) && is_array($check_enabled_rules)&& !empty($check_enabled_rules)) {
                         ?>
-                        <select class="wdr-search-box awdr-od-select-rules" data-placeholder="<?php esc_attr_e(" Select rules here ", 'wdr-omnibus-directive');?>" name="selected_rules[]" multiple="true" >
+                        <select class="wdr-search-box awdr-od-select-rules" data-placeholder="<?php esc_attr_e(" Select rules here ", 'wdr-omnibus-directive');?>" name="wdr-od-selected_rules[]" multiple="true" >
                             <?php
                             foreach ($check_enabled_rules as $check_enabled_rule) {
                                 echo '<option  ' . esc_html($check_enabled_rule['selected']) . '  value="' . esc_attr($check_enabled_rule['rule_id']) . '">' . esc_html($check_enabled_rule['rule_title']) . '</option>';
@@ -46,7 +46,7 @@ if (!defined('ABSPATH')) {
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Record and display number of days after sale was started', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
-                        <input type="number" name="awdr_refresh_date" value="<?php echo !empty($number_of_days) ? $number_of_days : 30;?>" title="Number of days" size="4" min="30" max="" step="1" >
+                        <input type="number" name="wdr-od-number-of-days" value="<?php echo !empty($number_of_days) ? $number_of_days : 30;?>" title="Number of days" size="4" min="30" max="" step="1" >
                     </td>
                 </tr>
                 <tr>
@@ -55,12 +55,12 @@ if (!defined('ABSPATH')) {
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Hide the message from omnibus plugin', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
-                        <input type="radio" data-name="hide_table_position" name="show_omnibus_message_option"
+                        <input type="radio" data-name="hide_table_position" name="wdr-od-is-show-message-option"
                                id="show_omnibus_message_option_1" value="1"
                             <?php echo(!empty($show_omnibus_message) ? 'checked' : '')  ?>><label
                         for="show_omnibus_message_option_1"><?php _e('Yes', 'wdr-omnibus-directive'); ?></label>
 
-                        <input type="radio" data-name="hide_table_position" name="show_omnibus_message_option"
+                        <input type="radio" data-name="hide_table_position" name="wdr-od-is-show-message-option"
                                id="show_omnibus_message_option_0" value="0"
                             <?php echo(empty($show_omnibus_message) ? 'checked' : '') ?>><label
                         for="show_omnibus_message_option_0"><?php _e('No', 'wdr-omnibus-directive'); ?></label>
@@ -77,7 +77,7 @@ if (!defined('ABSPATH')) {
                     </td>
                     <td>
                         <?php $message = isset($message) && !empty($message)? $message : "Preview lowest price was {{price}} updated from {{date}}"; ?>
-                        <textarea name="awdr_od_message" rows="5"  cols="30" > <?php _e($message, 'wdr-omnibus-directive'); ?> </textarea>
+                        <textarea name="wdr_od_message" rows="5"  cols="30" > <?php _e($message, 'wdr-omnibus-directive'); ?> </textarea>
                     </td>
                 </tr>
                 <tr class="hide_table_position" id="<?php echo empty($is_omnibus_plugin_active) ? 'wdr_od_override_omnibus_message_hide' : 'wdr_od_override_omnibus_message_show'; ?>" style="<?php echo empty($show_omnibus_message) || empty($is_omnibus_plugin_active) ? 'display:none' : ''; ?>" >
@@ -85,8 +85,8 @@ if (!defined('ABSPATH')) {
                     </td>
                     <td>
                         <?php $is_override_omnibus_message = isset($is_override_omnibus_message) ? $is_override_omnibus_message : 0; ?>
-                        <input type="checkbox" name="is_override_omnibus_message" id="is_override_omnibus_message" value="1" <?php echo ( $is_override_omnibus_message == 1 ? 'checked' : '') ?>>
-                        <label for="is_override_omnibus_message"><?php _e('Override the message displayed by Omnibus plugin', 'wdr-omnibus-directive'); ?></label>
+                        <input type="checkbox" name="wdr-od-is-override-omnibus-message" id="wdr-od-is-override-omnibus-message" value="1" <?php echo ( $is_override_omnibus_message == 1 ? 'checked' : '') ?>>
+                        <label for="wdr-od-is-override-omnibus-message"><?php _e('Override the message displayed by Omnibus plugin', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
                 <tr class="hide_table_position" id="wdr_od_select_message_position" style="<?php echo empty($show_omnibus_message) ? 'display:none' : ''; ?>" >
@@ -95,7 +95,7 @@ if (!defined('ABSPATH')) {
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Position to show message on product page', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
-                        <select name="position_to_show_message">
+                        <select name="wdr-od-position-to-show-message">
                             <option value="woocommerce_single_product_summary" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_single_product_summary' ? 'selected' : ''; ?>><?php _e('woocommerce_single_product_summary', 'wdr-omnibus-directive'); ?></option>
                             <option value="woocommerce_before_add_to_cart_form" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_add_to_cart_form' ? 'selected' : ''; ?>><?php _e('woocommerce_before_add_to_cart_form', 'wdr-omnibus-directive'); ?></option>
                             <option value="woocommerce_product_meta_end" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_product_meta_end' ? 'selected' : ''; ?>><?php _e('woocommerce_product_meta_end', 'wdr-omnibus-directive'); ?></option>
@@ -113,8 +113,8 @@ if (!defined('ABSPATH')) {
                 </tbody>
             </table>
             <br>
-            <?php wp_nonce_field('awdr_od_action_nonce', 'awdr_od_name_nonce'); ?>
-            <input class="button button-primary" type="submit" name="awdr-od-submit" value="Submit">
+            <?php wp_nonce_field('wdr_od_nonce_action', 'wdr_od_nonce_name'); ?>
+            <input class="button button-primary" type="submit" name="wdr-od-submit" value="Submit">
         </form>
     </div>
 </div>

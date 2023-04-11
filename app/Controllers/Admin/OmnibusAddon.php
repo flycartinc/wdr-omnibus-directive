@@ -29,11 +29,11 @@ class OmnibusAddon extends Base {
         self::$helper = empty( self::$helper) ? new Helper() : self::$helper;
 
         $section = $this->input->get('section');
-        $number_of_days = get_option('_awdr_price_lowest_days');
-        $show_omnibus_message = get_option('_awdr_show_omnibus_message');
-        $message = get_option('_awdr_od_message');
-        $is_override_omnibus_message = get_option('_is_override_omnibus_message');
-        $position_to_show_message = get_option('_awdr_position_to_show_message');
+        $number_of_days = get_option('_wdr_od_number_of_days');
+        $show_omnibus_message = get_option('_wdr_od_is_show_omnibus_message');
+        $message = get_option('_wdr_od_message');
+        $is_override_omnibus_message = get_option('_wdr_od_is_override_omnibus_message');
+        $position_to_show_message = get_option('_wdr_od_position_to_show_message');
         $is_omnibus_plugin_active = self::$helper->isOmnibusPluginActive();
         $check_enabled_rules = self::$helper->checkRuleEnabled();
 
