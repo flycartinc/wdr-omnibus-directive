@@ -91,16 +91,16 @@ class Compatibility
      */
     function checkVersion() {
         if (!$this->isAWDRODEnvironmentCompatible()) {
-            exit(__('Woo Discount Rules: Omnibus Directive can not be activated because it requires minimum PHP version of ', 'wdr-omnibus-directive') . ' ' . WDR_OD_PHP_REQUIRED_VERSION);
+            exit(__('Woo Discount Rules: Omnibus Directive can not be activated because it requires minimum PHP version of ', 'wdr-omnibus-directive') . ' ' . esc_attr_e(WDR_OD_PHP_REQUIRED_VERSION));
         }
         if (!$this->isAWDRODWooActive()) {
             exit(__('Woocommerce must installed and activated in-order to use Woo Discount Rules: Omnibus Directive!', 'wdr-omnibus-directive'));
         }
         if (!$this->isAWDRODWooCompatible()) {
-            exit(__(' Woo Discount Rules: Omnibus Directive requires at least Woocommerce', 'wdr-omnibus-directive') . ' ' . WDR_OD_WC_REQUIRED_VERSION);
+            exit(__(' Woo Discount Rules: Omnibus Directive requires at least Woocommerce', 'wdr-omnibus-directive') . ' ' . esc_attr_e(WDR_OD_WC_REQUIRED_VERSION));
         }
         if (!$this->isAWDRODWpCompatible()) {
-            exit(__(' Woo Discount Rules: Omnibus Directive requires at least WordPress', 'wdr-omnibus-directive') . ' ' . WDR_OD_WP_REQUIRED_VERSION);
+            exit(__(' Woo Discount Rules: Omnibus Directive requires at least WordPress', 'wdr-omnibus-directive') . ' ' . esc_attr_e(WDR_OD_WP_REQUIRED_VERSION));
         }
         if (!$this->isAWDRCorePluginActive()) {
             exit(__('Discount Rules for WooCommerce must installed and activated in-order to use Woo Discount Rules: Omnibus Directive!', 'wdr-omnibus-directive'));
