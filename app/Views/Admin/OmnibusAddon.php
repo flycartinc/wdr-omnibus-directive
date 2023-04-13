@@ -34,8 +34,8 @@ if (!defined('ABSPATH')) {
                         <?php
                         } else {
                             ?>
-                            <div style="color:#ff6700">Currently we support only for the Discount type: Product Adjustment.</div>
-                            <div style="color:#ff6700">Seems you doesn't have any active Product adjustment rules.</div>
+                            <div style="color:#ff6700"> <?php esc_attr_e("Currently we support only for the Discount type: Product Adjustment.", 'wdr-omnibus-directive') ?></div>
+                            <div style="color:#ff6700"> <?php esc_attr_e("Seems you doesn't have any active Product adjustment rules.", 'wdr-omnibus-directive') ?></div>
                             <?php
                         } ?>
                     </td>
