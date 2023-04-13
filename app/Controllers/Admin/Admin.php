@@ -78,7 +78,7 @@ class Admin
             return '';
         }
         $message = apply_filters('advanced_woo_discount_rules_omnibus_directive_message', $message, $min_price, $lowest_price_date);
-        esc_attr_e($message, 'wdr-omnibus-directive');
+        _e($message, 'wdr-omnibus-directive');
     }
 
     /**
