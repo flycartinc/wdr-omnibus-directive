@@ -29,21 +29,17 @@ class OmnibusAddon extends Base {
         self::$helper = empty( self::$helper) ? new Helper() : self::$helper;
 
         $section = $this->input->get('section');
-        $number_of_days = get_option('_wdr_od_number_of_days');
-        $show_omnibus_message = get_option('_wdr_od_is_show_omnibus_message');
-        $message = get_option('_wdr_od_message');
-        $is_override_omnibus_message = get_option('_wdr_od_is_override_omnibus_message');
-        $position_to_show_message = get_option('_wdr_od_position_to_show_message');
+        $settings_data = get_option('wdr_omnibus_directive');
         $is_omnibus_plugin_active = self::$helper->isOmnibusPluginActive();
         $check_enabled_rules = self::$helper->checkRuleEnabled();
 
         $params = array(
             'section' => $section,
-            'number_of_days' => $number_of_days,
-            'show_omnibus_message' => $show_omnibus_message,
-            'message' => $message,
-            'is_override_omnibus_message' => $is_override_omnibus_message,
-            'position_to_show_message' => $position_to_show_message,
+            'number_of_days' => $settings_data['number_of_days'],
+            'show_omnibus_message' => $settings_data['show_omnibus_message_option'],
+            'message' => $settings_data['message'],
+            'is_override_omnibus_message' => $settings_data['is_override_omnibus_message'],
+            'position_to_show_message' => $settings_data['position_to_show_message'],
             'is_omnibus_plugin_active' => $is_omnibus_plugin_active,
             'check_enabled_rules' => $check_enabled_rules,
         );

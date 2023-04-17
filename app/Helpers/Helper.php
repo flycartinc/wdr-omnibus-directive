@@ -25,7 +25,8 @@ class Helper {
 
         global $product;
         $product_id = $product->get_id();
-        $number_of_days = get_option('_wdr_od_number_of_days');
+        $settings_data = get_option('wdr_omnibus_directive');
+        $number_of_days = $settings_data['number_of_days'];
 
         $sale_price = $product->get_price();
         if ($product->get_type() == 'variable') {
@@ -214,7 +215,8 @@ class Helper {
                 if(isset($discount['total_discount_details']) && !empty($discount['total_discount_details'])){
                     $rules = \Wdr\App\Controllers\DiscountCalculator::$rules;
                     $rule_ids = array_keys($discount['total_discount_details']);
-                    $get_selected_rules = get_option('_wdr_od_selected_rules');
+                    $settings_data = get_option('wdr_omnibus_directive');
+                    $get_selected_rules = $settings_data['selected_rules'];
                     $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
                     foreach ($rule_ids as $rule_id) {
                         if(isset($rules[$rule_id])) {
@@ -251,7 +253,8 @@ class Helper {
         $check_enabled_rules = array();
         if (class_exists('\Wdr\App\Controllers\ManageDiscount')) {
             $rules = \Wdr\App\Controllers\ManageDiscount::$available_rules;
-            $get_selected_rules = get_option('_wdr_od_selected_rules');
+            $settings_data = get_option('wdr_omnibus_directive');
+            $get_selected_rules = $settings_data['selected_rules'];
             $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
             foreach ($rules as $available_rule) {
                 $selected = in_array($available_rule->rule->id, $selected_rules) ? "selected" : "";
@@ -265,5 +268,26 @@ class Helper {
             }
         }
         return $check_enabled_rules;
+    }
+
+    /**
+     * Check allowed html tags before save
+     * @param $message_without_filter
+     * @return string
+     */
+    public function checkMessageTags($message_without_filter) {
+        $allowed_tags = array(
+            'p' => array('class' => array(), 'style' => array()),
+            'span' => array('class' => array(), 'style' => array()),
+            'div' => array('class' => array(), 'style' => array()),
+            'h4' => array('class' => array()),
+            'h3' => array('class' => array()),
+            'h1' => array('class' => array()),
+            'h2' => array('class' => array()),
+            'strong' => array(),
+            'i' => array()
+        );
+        $allowed_tags = apply_filters( 'wdr_omnibus_directive_allowed_html_elements_and_attributes', $allowed_tags);
+        return wp_kses($message_without_filter, $allowed_tags);
     }
 }
