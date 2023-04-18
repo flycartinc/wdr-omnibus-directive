@@ -106,7 +106,7 @@ class Admin
         }
 
         $settings_data = get_option('wdr_omnibus_directive');
-        $number_of_days = $settings_data['updated_days'];
+        $number_of_days = $settings_data['number_of_days'];
 
         self::$helper->headerForShowLowestPriceInProductEditPage('description');
         self::$helper->showLowestPreviewPriceInProductEditPage($price_lowest, $number_of_days);
@@ -123,17 +123,18 @@ class Admin
             if (wp_verify_nonce($_POST['wdr_od_nonce_name'], 'wdr_od_nonce_action')) {
 
                 $number_of_days = $_POST['wdr-od-number-of-days'];
-                $show_omnibus_message_option = $_POST['wdr-od-is-show-message-option'];
-                $message = $_POST['wdr_od_message'];
+                $is_show_omnibus_message_option = $_POST['wdr-od-is-show-message-option'];
+                $message = $_POST['wdr-od-message'];
                 $is_override_omnibus_message = $_POST['wdr-od-is-override-omnibus-message'];
                 $selected_rules = $_POST['wdr-od-selected_rules'];
                 $position_to_show_message = $_POST['wdr-od-position-to-show-message'];
 
+                $acceptable = array('1','0');
                 $settings_data = [
-                    'number_of_days' => isset($number_of_days) && is_numeric($number_of_days) && $number_of_days >= 30 ? $number_of_days : 30,
-                    'show_omnibus_message_option' => isset($show_omnibus_message_option) && is_numeric($show_omnibus_message_option) ? $show_omnibus_message_option : 0,
-                    'message' => self::$helper->checkMessageTags(isset($message) ? ($message) : null),
-                    'is_override_omnibus_message' => isset($is_override_omnibus_message) && is_numeric($is_override_omnibus_message) ? $is_override_omnibus_message : 0,
+                    'number_of_days' => isset($number_of_days) && is_numeric($number_of_days) && $number_of_days >= 30 ? round($number_of_days) : 30,
+                    'is_show_omnibus_message_option' => isset($is_show_omnibus_message_option) && in_array($is_show_omnibus_message_option, $acceptable,true) ? $is_show_omnibus_message_option : 0,
+                    'message' => self::$helper->checkMessageTags(isset($message) ? trim($message) : null),
+                    'is_override_omnibus_message' => isset($is_override_omnibus_message) && in_array($is_override_omnibus_message, $acceptable,true) ? $is_override_omnibus_message : 0,
                     'selected_rules' => isset($selected_rules) && is_array($selected_rules) ? $selected_rules : array(),
                     'position_to_show_message' => isset($position_to_show_message) ? sanitize_text_field($position_to_show_message) : 'woocommerce_single_product_summary',
                 ];
@@ -151,7 +152,9 @@ class Admin
      * @return void
      */
     public static function scriptFiles() {
-        wp_enqueue_script('wdr_od_add_js',trailingslashit(WDR_OD_PLUGIN_URL) . 'assets/Js/index.js',array('jquery'));
+        if(isset($_GET['page']) && isset($_GET['tab']) && $_GET['page'] == 'woo_discount_rules' && $_GET['tab'] == 'addons') {
+            wp_enqueue_script('wdr_od_add_js',trailingslashit(WDR_OD_PLUGIN_URL) . 'assets/Js/index.js',array('jquery'), WDR_OD_VERSION);
+        }
     }
 
     /**
@@ -172,7 +175,7 @@ class Admin
      */
     function successNotice() {
         $class = 'notice notice-success';
-        $message = __( 'Saved successfully.', 'sample-text-domain' );
+        $message = __('Saved successfully.', 'wdr-omnibus-directive');
         printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
     }
 
@@ -182,7 +185,7 @@ class Admin
      */
     function errorNotice() {
         $class = 'notice notice-error';
-        $message = __( 'Error occurred.', 'sample-text-domain' );
+        $message = __('Error occurred.', 'wdr-omnibus-directive');
         printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
     }
 }
