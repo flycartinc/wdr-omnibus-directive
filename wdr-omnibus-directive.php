@@ -26,6 +26,13 @@
 defined('ABSPATH') or exit;
 
 /**
+ * Current version of our app
+ */
+if (!defined('WDR_OD_VERSION')) {
+    define('WDR_OD_VERSION', '1.0.0');
+}
+
+/**
  * The plugin path
  */
 if (!defined('WDR_OD_PLUGIN_PATH')) {
@@ -71,7 +78,7 @@ if (!defined('WDR_OD_WP_REQUIRED_VERSION')) {
  * Required Discount Rule Version
  */
 if (!defined('WDR_OD_WDR_REQUIRED_VERSION')) {
-    define('WDR_OD_WDR_REQUIRED_VERSION', '5.4');
+    define('WDR_OD_WDR_REQUIRED_VERSION', '2.5.4');
 }
 
 // To load composer autoload (psr-4)

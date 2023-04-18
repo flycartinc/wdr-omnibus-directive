@@ -13,6 +13,8 @@ namespace WDR_OD\App\Controllers\Admin;
 use Wdr\App\Controllers\Admin\Addons\Base;
 use WDR_OD\App\Helpers\Helper;
 
+defined('ABSPATH') or exit;
+
 class OmnibusAddon extends Base {
 
     private static $helper;
@@ -36,7 +38,7 @@ class OmnibusAddon extends Base {
         $params = array(
             'section' => $section,
             'number_of_days' => $settings_data['number_of_days'],
-            'show_omnibus_message' => $settings_data['show_omnibus_message_option'],
+            'is_show_omnibus_message_option' => $settings_data['is_show_omnibus_message_option'],
             'message' => $settings_data['message'],
             'is_override_omnibus_message' => $settings_data['is_override_omnibus_message'],
             'position_to_show_message' => $settings_data['position_to_show_message'],

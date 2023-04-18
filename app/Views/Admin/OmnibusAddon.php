@@ -56,18 +56,18 @@ if (!defined('ABSPATH')) {
                     </td>
                     <td>
                         <input type="radio" data-name="hide_table_position" name="wdr-od-is-show-message-option"
-                               id="show_omnibus_message_option_1" value="1"
-                            <?php echo(!empty($show_omnibus_message) ? 'checked' : '')  ?>><label
-                        for="show_omnibus_message_option_1"><?php esc_attr_e('Yes', 'wdr-omnibus-directive'); ?></label>
+                               id="is_show_omnibus_message_option_1" value="1"
+                            <?php echo(!empty($is_show_omnibus_message_option) ? 'checked' : '')  ?>><label
+                        for="is_show_omnibus_message_option_1"><?php esc_attr_e('Yes', 'wdr-omnibus-directive'); ?></label>
 
                         <input type="radio" data-name="hide_table_position" name="wdr-od-is-show-message-option"
-                               id="show_omnibus_message_option_0" value="0"
-                            <?php echo(empty($show_omnibus_message) ? 'checked' : '') ?>><label
-                        for="show_omnibus_message_option_0"><?php esc_attr_e('No', 'wdr-omnibus-directive'); ?></label>
+                               id="is_show_omnibus_message_option" value="0"
+                            <?php echo(empty($is_show_omnibus_message_option) ? 'checked' : '') ?>><label
+                        for="is_show_omnibus_message_option"><?php esc_attr_e('No', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
 
-                <tr class="hide_table_position" id="wdr_od_omnibus_message" style="<?php echo empty($show_omnibus_message) ? 'display:none' : ''; ?>">
+                <tr class="hide_table_position" id="wdr_od_omnibus_message" style="<?php echo empty($is_show_omnibus_message_option) ? 'display:none' : ''; ?>">
                     <td>
                         <label class="awdr-left-align"><?php esc_attr_e('Omnibus Message', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('You can use the following shortcode', 'wdr-omnibus-directive'); ?></span>
@@ -77,10 +77,10 @@ if (!defined('ABSPATH')) {
                     </td>
                     <td>
                         <?php $message = isset($message) && !empty($message)? $message : "Preview lowest price was {{price}} updated from {{date}}"; ?>
-                        <textarea name="wdr_od_message" rows="5"  cols="30" > <?php esc_attr_e($message, 'wdr-omnibus-directive'); ?> </textarea>
+                        <textarea name="wdr-od-message" rows="5"  cols="30" > <?php esc_attr_e($message, 'wdr-omnibus-directive'); ?> </textarea>
                     </td>
                 </tr>
-                <tr class="hide_table_position" id="<?php echo empty($is_omnibus_plugin_active) ? 'wdr_od_override_omnibus_message_hide' : 'wdr_od_override_omnibus_message_show'; ?>" style="<?php echo empty($show_omnibus_message) || empty($is_omnibus_plugin_active) ? 'display:none' : ''; ?>" >
+                <tr class="hide_table_position" id="<?php echo empty($is_omnibus_plugin_active) ? 'wdr_od_override_omnibus_message_hide' : 'wdr_od_override_omnibus_message_show'; ?>" style="<?php echo empty($is_show_omnibus_message_option) || empty($is_omnibus_plugin_active) ? 'display:none' : ''; ?>" >
                     <td>
                     </td>
                     <td>
@@ -89,7 +89,7 @@ if (!defined('ABSPATH')) {
                         <label for="wdr-od-is-override-omnibus-message"><?php esc_attr_e('Override the message displayed by Omnibus plugin', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
-                <tr class="hide_table_position" id="wdr_od_select_message_position" style="<?php echo empty($show_omnibus_message) ? 'display:none' : ''; ?>" >
+                <tr class="hide_table_position" id="wdr_od_select_message_position" style="<?php echo empty($is_show_omnibus_message_option) ? 'display:none' : ''; ?>" >
                     <td>
                         <label class="awdr-left-align"><?php esc_attr_e('Position to show message', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Position to show message on product page', 'wdr-omnibus-directive'); ?></span>

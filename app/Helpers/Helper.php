@@ -10,8 +10,9 @@
  */
 
 namespace WDR_OD\App\Helpers;
-
 use WDR_OD\App\Controllers\Admin\OmnibusAddon;
+
+defined('ABSPATH') or exit;
 
 class Helper {
 
