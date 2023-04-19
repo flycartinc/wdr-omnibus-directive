@@ -111,7 +111,7 @@ class Helper {
                 break;
             }
         }
-        return apply_filters('advanced_woo_discount_rules_omnibus_directive_min_price', isset($min_price) ? $min_price : 0 );
+        return apply_filters('wdr_omnibus_directive_min_price', isset($min_price) ? $min_price : 0 );
     }
 
     /**

@@ -41,7 +41,7 @@ class Route
             } else {
                 $position_to_show_message = $settings_data['position_to_show_message'];
                 $position_to_show_message = is_string($position_to_show_message) ? $position_to_show_message : "woocommerce_single_product_summary";
-                $position_to_show_message = apply_filters('advanced_woo_discount_rules_omnibus_directive_show_message_position', $position_to_show_message);
+                $position_to_show_message = apply_filters('wdr_omnibus_directive_show_message_position', $position_to_show_message);
                 add_filter($position_to_show_message, array(self::$admin, 'separateOmnibusMessageForDiscountRule'));
             }
         }
