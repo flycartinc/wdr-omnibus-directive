@@ -48,10 +48,10 @@ class Admin
             $custom_message = $settings_data['message'];
             $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
-            $date_format = apply_filters('advanced_woo_discount_rules_omnibus_directive_message_date_format_for_omnibus',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
+            $date_format = apply_filters('wdr_omnibus_directive_message_date_format_for_omnibus',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
             $message = str_replace('{{date}}', $date_format, $message);
         }
-        return apply_filters('advanced_woo_discount_rules_omnibus_directive_message_for_omnibus', $message, $min_price, $lowest_price_date);
+        return apply_filters('wdr_omnibus_directive_message_for_omnibus', $message, $min_price, $lowest_price_date);
     }
 
     /**
@@ -73,13 +73,13 @@ class Admin
             $custom_message = $settings_data['message'];
             $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
-            $date_format = apply_filters('advanced_woo_discount_rules_omnibus_directive_message_date_format',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
+            $date_format = apply_filters('wdr_omnibus_directive_message_date_format',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
             $message = str_replace('{{date}}', $date_format, $message);
             $message = '<div class="wdr-od-message">' . $message . '</div>';
         } else {
             return '';
         }
-        $message = apply_filters('advanced_woo_discount_rules_omnibus_directive_message', $message, $min_price, $lowest_price_date);
+        $message = apply_filters('wdr_omnibus_directive_message', $message, $min_price, $lowest_price_date);
         _e($message, 'wdr-omnibus-directive');
     }
 
