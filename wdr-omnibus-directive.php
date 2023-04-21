@@ -102,13 +102,13 @@ function wdrOdPluginActivate() {
 // Call the Route class
 add_action('plugins_loaded', function () {
     if ( class_exists( 'WooCommerce' ) ) {
-        do_action('advanced_woo_discount_rules_omnibus_directive_before_loaded');
+        do_action('wdr_omnibus_directive_before_loaded');
         if (class_exists('WDR_OD\App\Route')) {
             $route =  new WDR_OD\App\Route();
             $route->hooks();
         } else {
             wp_die(__('Woo Discount Rules: Omnibus Directive is unable to find the Route class.'));
         }
-        do_action('advanced_woo_discount_rules_omnibus_directive_loaded');
+        do_action('wdr_omnibus_directive_loaded');
     }
 }, 1);
