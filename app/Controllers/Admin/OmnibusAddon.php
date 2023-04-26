@@ -37,13 +37,13 @@ class OmnibusAddon extends Base {
 
         $params = array(
             'section' => $section,
-            'number_of_days' => $settings_data['number_of_days'],
-            'is_show_omnibus_message_option' => $settings_data['is_show_omnibus_message_option'],
-            'message' => $settings_data['message'],
-            'is_override_omnibus_message' => $settings_data['is_override_omnibus_message'],
-            'position_to_show_message' => $settings_data['position_to_show_message'],
-            'is_omnibus_plugin_active' => $is_omnibus_plugin_active,
-            'check_enabled_rules' => $check_enabled_rules,
+            'number_of_days' => isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30,
+            'is_show_omnibus_message_option' => isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0,
+            'message' => isset($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated from {{date}}",
+            'is_override_omnibus_message' => isset($settings_data['is_override_omnibus_message']) ? $settings_data['is_override_omnibus_message'] : 0,
+            'position_to_show_message' => isset($settings_data['position_to_show_message']) ? $settings_data['position_to_show_message'] : "woocommerce_single_product_summary",
+            'is_omnibus_plugin_active' => isset($is_omnibus_plugin_active) ? $is_omnibus_plugin_active : 0,
+            'check_enabled_rules' => isset($check_enabled_rules) && !empty($check_enabled_rules) && is_array($check_enabled_rules) ? $check_enabled_rules : array(),
         );
         self::$template_helper->setPath(WDR_OD_PLUGIN_PATH . 'app/Views/Admin/OmnibusAddon.php')->setData($params)->display();
     }

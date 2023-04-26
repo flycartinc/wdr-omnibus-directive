@@ -45,8 +45,7 @@ class Admin
         $lowest_price_date = isset($date) && !empty($date)? $date : 0;
         if (!empty($min_price)) {
             $settings_data = get_option('wdr_omnibus_directive');
-            $custom_message = $settings_data['message'];
-            $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
+            $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
             $date_format = apply_filters('wdr_omnibus_directive_message_date_format_for_omnibus',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
             $message = str_replace('{{date}}', $date_format, $message);
@@ -70,8 +69,7 @@ class Admin
         $lowest_price_date = isset($date) && !empty($date)? $date : 0;
         if (!empty($min_price)) {
             $settings_data = get_option('wdr_omnibus_directive');
-            $custom_message = $settings_data['message'];
-            $message = isset($custom_message) && !empty($custom_message)? $custom_message : "Preview lowest price was {{price}} updated from {{date}}";
+            $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated from {{date}}";
             $message = str_replace('{{price}}', wc_price($min_price), $message);
             $date_format = apply_filters('wdr_omnibus_directive_message_date_format',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
             $message = str_replace('{{date}}', $date_format, $message);
@@ -106,7 +104,7 @@ class Admin
         }
 
         $settings_data = get_option('wdr_omnibus_directive');
-        $number_of_days = $settings_data['number_of_days'];
+        $number_of_days = isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30;
 
         self::$helper->headerForShowLowestPriceInProductEditPage('description');
         self::$helper->showLowestPreviewPriceInProductEditPage($price_lowest, $number_of_days);

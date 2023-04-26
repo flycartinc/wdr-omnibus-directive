@@ -27,7 +27,7 @@ class Helper {
         global $product;
         $product_id = $product->get_id();
         $settings_data = get_option('wdr_omnibus_directive');
-        $number_of_days = $settings_data['number_of_days'];
+        $number_of_days = isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30;
 
         $sale_price = $product->get_price();
         if ($product->get_type() == 'variable') {
@@ -217,8 +217,7 @@ class Helper {
                     $rules = \Wdr\App\Controllers\DiscountCalculator::$rules;
                     $rule_ids = array_keys($discount['total_discount_details']);
                     $settings_data = get_option('wdr_omnibus_directive');
-                    $get_selected_rules = $settings_data['selected_rules'];
-                    $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
+                    $selected_rules = isset($settings_data['selected_rules']) && !empty($settings_data['selected_rules']) && is_array($settings_data['selected_rules']) ? $settings_data['selected_rules'] : array();;
                     foreach ($rule_ids as $rule_id) {
                         if(isset($rules[$rule_id])) {
                             $matched_rule = $rules[$rule_id]->rule; // Here we get the matched rule info
@@ -249,14 +248,12 @@ class Helper {
      * Check the enabled product adjustment rules
      * @return array
      */
-    public function checkRuleEnabled()
-    {
+    public function checkRuleEnabled() {
         $check_enabled_rules = array();
         if (class_exists('\Wdr\App\Controllers\ManageDiscount')) {
             $rules = \Wdr\App\Controllers\ManageDiscount::$available_rules;
             $settings_data = get_option('wdr_omnibus_directive');
-            $get_selected_rules = $settings_data['selected_rules'];
-            $selected_rules = !empty($get_selected_rules) ? $get_selected_rules : array();
+            $selected_rules = isset($settings_data['selected_rules']) && !empty($settings_data['selected_rules']) && is_array($settings_data['selected_rules']) ? $settings_data['selected_rules'] : array();
             foreach ($rules as $available_rule) {
                 $selected = in_array($available_rule->rule->id, $selected_rules) ? "selected" : "";
                 if ($available_rule->rule->discount_type == 'wdr_simple_discount' && $available_rule->rule->enabled == 1) {
