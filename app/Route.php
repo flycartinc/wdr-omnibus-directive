@@ -43,6 +43,9 @@ class Route
                 add_filter($position_to_show_message, array(self::$admin, 'separateOmnibusMessageForDiscountRule'));
             }
         }
+        if($is_omnibus_plugin_active == 1) {
+            add_action('wp_loaded', array(self::$helper, 'changeDiscountRulesPriceHtmlPriority'));
+        }
 
         add_action('woocommerce_product_options_pricing', array(self::$admin, 'showLowestPriceInProductEditPage'), 1 );
         add_filter('plugin_action_links_' . WDR_OD_PLUGIN_BASENAME, array(self::$admin, 'wdrOmActionLink'));
