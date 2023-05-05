@@ -288,4 +288,17 @@ class Helper {
         $allowed_tags = apply_filters( 'wdr_omnibus_directive_allowed_html_elements_and_attributes', $allowed_tags);
         return wp_kses($message_without_filter, $allowed_tags);
     }
+
+    /**
+     * Change discount rules price html priority
+     * @return void
+     */
+    public function changeDiscountRulesPriceHtmlPriority() {
+        if(class_exists('\Wdr\App\Router')){
+            remove_filter('woocommerce_get_price_html', array(\Wdr\App\Router::$manage_discount, 'getPriceHtml'), 100, 2);
+            add_filter('woocommerce_get_price_html', array(\Wdr\App\Router::$manage_discount, 'getPriceHtml'), 9, 2);
+            remove_filter('woocommerce_variable_price_html', array(\Wdr\App\Router::$manage_discount, 'getVariablePriceHtml'), 100);
+            add_filter('woocommerce_variable_price_html', array(\Wdr\App\Router::$manage_discount, 'getVariablePriceHtml'), 9, 2);
+        }
+    }
 }

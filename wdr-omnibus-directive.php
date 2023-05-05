@@ -100,8 +100,8 @@ function wdrOdPluginActivate() {
 }
 
 // Call the Route class
-add_action('plugins_loaded', function () {
-    if ( class_exists( 'WooCommerce' ) ) {
+add_action('plugins_loaded', function() {
+    if (class_exists('WooCommerce')) {
         do_action('wdr_omnibus_directive_before_loaded');
         if (class_exists('WDR_OD\App\Route')) {
             $route =  new WDR_OD\App\Route();
