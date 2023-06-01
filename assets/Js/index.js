@@ -12,4 +12,12 @@ jQuery(document).ready(function ($){
             $('#wdr_od_omnibus_message').hide();
         }
     });
+
+    $('#wdr-od-is-override-omnibus-message').change(function() {
+        if(this.checked) {
+            $('#wdr_od_select_message_position').hide();
+        }else{
+            $('#wdr_od_select_message_position').show();
+        }
+    });
 });
