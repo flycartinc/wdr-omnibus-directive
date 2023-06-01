@@ -10,6 +10,7 @@
  */
 
 namespace WDR_OD\App\Helpers;
+use Wdr\App\Helpers\Woocommerce;
 use WDR_OD\App\Controllers\Admin\OmnibusAddon;
 
 defined('ABSPATH') or exit;
@@ -22,14 +23,9 @@ class Helper {
      * Get and update minimum price
      * @return int|mixed
      */
-    public function getAndUpdateMinimumPrice() {
-
-        global $product;
-        $product_id = $product->get_id();
-        $settings_data = get_option('wdr_omnibus_directive');
-        $number_of_days = isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30;
-
-        $sale_price = $product->get_price();
+    public function getAndUpdateMinimumPrice($product) {
+        $product_id = Woocommerce::getProductId($product);
+        $price = Woocommerce::getProductPrice($product);
         if ($product->get_type() == 'variable') {
             $discount_price = array();
             $min_discounted_price = 0;
@@ -40,15 +36,27 @@ class Helper {
                     $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', false, $product_variation, 1, 0, 'discounted_price', true, false);
                     if (isset($discount) && $discount !== false) {
                         $discount_price[] = $discount;
+                        $this->updateMinimumPrice($discount, $key);
                         $min_discounted_price = (min($discount_price));
                     }
                 }
             }
             $discount = $min_discounted_price;
         } else {
-            $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $sale_price, $product, 1, 0, 'discounted_price', true, false);
+            $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $price, $product, 1, 0, 'discounted_price', true, false);
         }
+        return $this->updateMinimumPrice($discount, $product_id);
+    }
 
+    /**
+     * Update the minimum price
+     * @param $discount
+     * @param $product_id
+     * @return mixed|null
+     */
+    public function updateMinimumPrice($discount, $product_id) {
+        $settings_data = get_option('wdr_omnibus_directive');
+        $number_of_days = isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30;
         $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
         $wdr_od_price_history = get_post_meta($product_id, '_wdr_od_price_history', true);
 
@@ -195,8 +203,7 @@ class Helper {
      * Check the rule is eligible or not
      * @return bool
      */
-    public static function checkRuleId() {
-        global $product;
+    public static function checkRuleId($product) {
         $discount = false;
         if ($product->get_type() == 'variable') {
             $available_variations = $product->get_variation_prices();
@@ -207,7 +214,7 @@ class Helper {
                 }
             }
         } else {
-            $price = $product->get_price();
+            $price = Woocommerce::getProductPrice($product);
             $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $price, $product, 1, 0, 'all', true, false);
         }
 
@@ -266,27 +273,6 @@ class Helper {
             }
         }
         return $check_enabled_rules;
-    }
-
-    /**
-     * Check allowed html tags before save
-     * @param $message_without_filter
-     * @return string
-     */
-    public function checkMessageTags($message_without_filter) {
-        $allowed_tags = array(
-            'p' => array('class' => array(), 'style' => array()),
-            'span' => array('class' => array(), 'style' => array()),
-            'div' => array('class' => array(), 'style' => array()),
-            'h4' => array('class' => array()),
-            'h3' => array('class' => array()),
-            'h1' => array('class' => array()),
-            'h2' => array('class' => array()),
-            'strong' => array(),
-            'i' => array()
-        );
-        $allowed_tags = apply_filters( 'wdr_omnibus_directive_allowed_html_elements_and_attributes', $allowed_tags);
-        return wp_kses($message_without_filter, $allowed_tags);
     }
 
     /**

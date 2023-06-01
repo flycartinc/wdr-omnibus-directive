@@ -89,13 +89,14 @@ if (!defined('ABSPATH')) {
                         <label for="wdr-od-is-override-omnibus-message"><?php esc_attr_e('Override the message displayed by Omnibus plugin', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
-                <tr class="hide_table_position" id="wdr_od_select_message_position" style="<?php echo empty($is_show_omnibus_message_option) ? 'display:none' : ''; ?>" >
+                <tr class="hide_table_position" id="wdr_od_select_message_position" style="<?php echo empty($is_show_omnibus_message_option) || !empty($is_override_omnibus_message) ? 'display:none' : ''; ?>" >
                     <td>
                         <label class="awdr-left-align"><?php esc_attr_e('Position to show message', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Position to show message on product page', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
                         <select name="wdr-od-position-to-show-message">
+                            <option value="woocommerce_get_price_html" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_get_price_html' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_get_price_html', 'wdr-omnibus-directive'); ?></option>
                             <option value="woocommerce_single_product_summary" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_single_product_summary' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_single_product_summary', 'wdr-omnibus-directive'); ?></option>
                             <option value="woocommerce_before_add_to_cart_form" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_before_add_to_cart_form' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_before_add_to_cart_form', 'wdr-omnibus-directive'); ?></option>
                             <option value="woocommerce_product_meta_end" <?php echo isset($position_to_show_message) && $position_to_show_message == 'woocommerce_product_meta_end' ? 'selected' : ''; ?>><?php esc_attr_e('woocommerce_product_meta_end', 'wdr-omnibus-directive'); ?></option>
