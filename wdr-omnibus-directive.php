@@ -1,26 +1,17 @@
 <?php
 /**
- * Woo Discount Rules: Omnibus Directive
- *
- * @package           wdr-omnibus-directive
- * @author            Kirubanithi G <kirubanithi@flycart.org>
- * @copyright         2022 Flycart
- * @license           GPL-3.0-or-later
- * @link              https://flycart.org
- *
- * @wordpress-plugin
  * Plugin Name:       Woo Discount Rules: Omnibus Directive
- * Plugin URI:        https://flycart.org
- * Description:       It helps to display the lowest price of a product for the last n days.
+ * Plugin URI:        https://www.flycart.org/products/wordpress/woocommerce-discount-rules/addons/
+ * Description:       Plugin displays the lowest discount price of product applied through Discount Rules.
  * Version:           1.0.0
- * Requires at least: 5.2
- * Requires PHP:      5.6
  * Author:            Flycart
  * Author URI:        https://flycart.org
  * Text Domain:       wdr-omnibus-directive
+ * Slug:              wdr-omnibus-directive
  * Domain Path:       /i18n/languages
- * License:           GPL v3 or later
- * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
+ * Requires at least: 5.2
+ * WC requires at least: 5.0
+ * WC tested up to: 7.3
  */
 
 defined('ABSPATH') or exit;
@@ -64,7 +55,7 @@ if (!defined('WDR_OD_PHP_REQUIRED_VERSION')) {
  * Required WooCommerce Version
  */
 if (!defined('WDR_OD_WC_REQUIRED_VERSION')) {
-    define('WDR_OD_WC_REQUIRED_VERSION', '3.0.0');
+    define('WDR_OD_WC_REQUIRED_VERSION', '5.0');
 }
 
 /**
@@ -78,7 +69,7 @@ if (!defined('WDR_OD_WP_REQUIRED_VERSION')) {
  * Required Discount Rule Version
  */
 if (!defined('WDR_OD_WDR_REQUIRED_VERSION')) {
-    define('WDR_OD_WDR_REQUIRED_VERSION', '2.5.4');
+    define('WDR_OD_WDR_REQUIRED_VERSION', '2.6.0');
 }
 
 // To load composer autoload (psr-4)
@@ -101,7 +92,7 @@ function wdrOdPluginActivate() {
 
 // Call the Route class
 add_action('plugins_loaded', function() {
-    if (class_exists('WooCommerce')) {
+    if (class_exists('WooCommerce') && class_exists('Wdr\App\Router')) {
         do_action('wdr_omnibus_directive_before_loaded');
         if (class_exists('WDR_OD\App\Route')) {
             $route =  new WDR_OD\App\Route();
