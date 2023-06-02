@@ -1,19 +1,8 @@
 <?php
-/**
- * Woo Discount Rules: Omnibus Directive
- *
- * @package   wdr-omnibus-directive
- * @author    Kirubanithi G <kirubanithi@flycart.org>
- * @copyright 2022 Flycart
- * @license   GPL-3.0-or-later
- * @link      https://flycart.org
- */
-
 namespace WDR_OD\App;
 use Wdr\App\Controllers\Configuration;
 use WDR_OD\App\Controllers\Admin\Admin;
 use WDR_OD\App\Helpers\Helper;
-
 defined('ABSPATH') or exit;
 
 class Route
