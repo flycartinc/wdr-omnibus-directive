@@ -97,6 +97,9 @@ add_action('plugins_loaded', function() {
         if (class_exists('WDR_OD\App\Route')) {
             $route =  new WDR_OD\App\Route();
             $route->hooks();
+            if(function_exists('load_plugin_textdomain')){
+                load_plugin_textdomain( 'wdr-omnibus-directive', FALSE, basename( dirname( __FILE__ ) ) . '/i18n/languages/' );
+            }
         } else {
             wp_die(__('Woo Discount Rules: Omnibus Directive is unable to find the Route class.'));
         }
