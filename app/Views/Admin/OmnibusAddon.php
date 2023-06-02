@@ -73,7 +73,7 @@ if (!defined('ABSPATH')) {
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('You can use the following shortcode', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{price}} -> Replace the lowest price', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{date}} -> Display the day when was lowest price', 'wdr-omnibus-directive'); ?></span>
-                        <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>: Preview lowest price was {{price}} updated from {{date}}', 'wdr-omnibus-directive'); ?></span>
+                        <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>:') . esc_html_e('Preview lowest price was {{price}} updated from {{date}}', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
                         <?php $message = isset($message) && !empty($message)? $message : "Preview lowest price was {{price}} updated from {{date}}"; ?>

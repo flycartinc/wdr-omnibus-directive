@@ -104,22 +104,22 @@ class Compatibility
      */
     function checkVersion() {
         if (!$this->isWDRODEnvironmentCompatible()) {
-            exit(__('Woo Discount Rules: Omnibus Directive can not be activated because it requires minimum PHP version of', 'wdr-omnibus-directive') . ' ' . WDR_OD_PHP_REQUIRED_VERSION);
+            exit(__('Woo Discount Rules: Omnibus Directive can not be activated because it requires minimum PHP version of', 'wdr-omnibus-directive') . ' ' . esc_html(WDR_OD_PHP_REQUIRED_VERSION));
         }
         if (!$this->isWDRODWooActive()) {
             exit(__('Woocommerce must installed and activated in-order to use Woo Discount Rules: Omnibus Directive!', 'wdr-omnibus-directive'));
         }
         if (!$this->isWDRODWooCompatible()) {
-            exit(__('Woo Discount Rules: Omnibus Directive requires at least Woocommerce', 'wdr-omnibus-directive') . ' ' . WDR_OD_WC_REQUIRED_VERSION);
+            exit(__('Woo Discount Rules: Omnibus Directive requires at least Woocommerce', 'wdr-omnibus-directive') . ' ' . esc_html(WDR_OD_WC_REQUIRED_VERSION));
         }
         if (!$this->isWDRODWpCompatible()) {
-            exit(__(' Woo Discount Rules: Omnibus Directive requires at least WordPress', 'wdr-omnibus-directive') . ' ' . WDR_OD_WP_REQUIRED_VERSION);
+            exit(__(' Woo Discount Rules: Omnibus Directive requires at least WordPress', 'wdr-omnibus-directive') . ' ' . esc_html(WDR_OD_WP_REQUIRED_VERSION));
         }
         if (!$this->isWDRCorePluginActive()) {
             exit(__('Discount Rules for WooCommerce must installed and activated in-order to use Woo Discount Rules: Omnibus Directive!', 'wdr-omnibus-directive'));
         }
         if (!$this->isWDRODAWDRCompatible()) {
-            exit(__('Woo Discount Rules: Omnibus Directive requires at least Woo Discount Rules', 'wdr-omnibus-directive') . ' ' . WDR_OD_WDR_REQUIRED_VERSION);
+            exit(__('Woo Discount Rules: Omnibus Directive requires at least Woo Discount Rules', 'wdr-omnibus-directive') . ' ' . esc_html(WDR_OD_WDR_REQUIRED_VERSION));
         }
     }
 }

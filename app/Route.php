@@ -55,7 +55,7 @@ class Route
                         add_filter('advanced_woo_discount_rules_dynamic_get_price_html',array(self::$admin, 'separateDynamicPriceHtmlOmnibusMessage'), 100, 3);
                     }
                 } else {
-                    add_filter($position_to_show_message, array(self::$admin, 'separateOmnibusMessageForDiscountRule'));
+                    add_action($position_to_show_message, array(self::$admin, 'separateOmnibusMessageForDiscountRule'));
                 }
             }
         }
