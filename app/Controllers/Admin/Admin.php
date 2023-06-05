@@ -10,7 +10,7 @@ class Admin
     /**
      * @var Helper
      */
-    private static $helper;
+    private static $helper , $check_rule_for_merged_message;
 
     public function __construct()
     {
@@ -55,6 +55,7 @@ class Admin
 
         $is_eligible = self::$helper->checkRuleId($product);
         if(isset($is_eligible) && empty($is_eligible)){
+            self::$check_rule_for_merged_message = true;
             return $price_lowest;
         }
 
@@ -85,6 +86,9 @@ class Admin
      * @return mixed|null
      */
     public static function changeOmnibusMessageTemplate($message) {
+        if(self::$check_rule_for_merged_message) {
+            return $message;
+        }
         $settings_data = get_option('wdr_omnibus_directive');
         $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated from {{date}}";
         $message = str_replace('{{price}}', '{price}', $message);
