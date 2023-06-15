@@ -20,6 +20,7 @@ if (!defined('ABSPATH')) {
                     <td>
                         <label class="awdr-left-align"><?php esc_attr_e('Select rules', 'wdr-omnibus-directive') ?></label>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Select the product adjustment rules', 'wdr-omnibus-directive'); ?></span>
+                        <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Note : Currently, we support product adjustment rules only', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
                         <?php if(isset($check_enabled_rules) && is_array($check_enabled_rules)&& !empty($check_enabled_rules)) {
