@@ -72,14 +72,18 @@ if (!defined('WDR_OD_WDR_REQUIRED_VERSION')) {
     define('WDR_OD_WDR_REQUIRED_VERSION', '2.6.0');
 }
 
-// To load composer autoload (psr-4)
-if (file_exists(WDR_OD_PLUGIN_PATH . '/vendor/autoload.php')) {
-    require WDR_OD_PLUGIN_PATH . '/vendor/autoload.php';
+/**
+ * Package - autoload
+ */
+if (!file_exists(WDR_OD_PLUGIN_PATH . '/vendor/autoload.php')) {
+    return false;
 } else {
-    wp_die('Woo Discount Rules: Omnibus Directive is unable to find the autoload file.');
+    require WDR_OD_PLUGIN_PATH . '/vendor/autoload.php';
 }
 
-//Check compatibility
+/**
+ * Check compatibility
+ */
 register_activation_hook(__FILE__, 'wdrOdPluginActivate');
 function wdrOdPluginActivate() {
     if (class_exists('WDR_OD\App\Controllers\Admin\Compatibility')) {
@@ -90,19 +94,19 @@ function wdrOdPluginActivate() {
     }
 }
 
-// Call the Route class
+/**
+ * Call the Route class
+ */
 add_action('plugins_loaded', function() {
     if (class_exists('WooCommerce') && class_exists('Wdr\App\Router')) {
-        do_action('wdr_omnibus_directive_before_loaded');
         if (class_exists('WDR_OD\App\Route')) {
+            do_action('wdr_omnibus_directive_before_loaded');
             $route =  new WDR_OD\App\Route();
             $route->hooks();
             if(function_exists('load_plugin_textdomain')){
                 load_plugin_textdomain( 'wdr-omnibus-directive', FALSE, basename( dirname( __FILE__ ) ) . '/i18n/languages/' );
             }
-        } else {
-            wp_die(__('Woo Discount Rules: Omnibus Directive is unable to find the Route class.'));
+            do_action('wdr_omnibus_directive_loaded');
         }
-        do_action('wdr_omnibus_directive_loaded');
     }
 }, 1);
