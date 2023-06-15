@@ -270,12 +270,12 @@ class Admin
         if(isset($_POST['wdr-od-submit'])) {
             if (wp_verify_nonce($_POST['wdr_od_nonce_name'], 'wdr_od_nonce_action')) {
 
-                $number_of_days = $_POST['wdr-od-number-of-days'];
-                $is_show_omnibus_message_option = $_POST['wdr-od-is-show-message-option'];
-                $message = $_POST['wdr-od-message'];
-                $is_override_omnibus_message = $_POST['wdr-od-is-override-omnibus-message'];
-                $selected_rules = $_POST['wdr-od-selected_rules'];
-                $position_to_show_message = $_POST['wdr-od-position-to-show-message'];
+                $number_of_days = $_POST['wdr_od_number_of_days'];
+                $is_show_omnibus_message_option = $_POST['wdr_od_is_show_message_option'];
+                $message = $_POST['wdr_od_message'];
+                $is_override_omnibus_message = $_POST['wdr_od_is_override_omnibus_message'];
+                $selected_rules = $_POST['wdr_od_selected_rules'];
+                $position_to_show_message = $_POST['wdr_od_position_to_show_message'];
 
                 $acceptable = array('1','0');
                 $settings_data = [
@@ -296,11 +296,25 @@ class Admin
     }
 
     /**
+     * Print settings saved message
+     * @return void
+     */
+    function printNotice() {
+        if (isset($_GET['addon']) && $_GET['addon'] == "omnibus_directive" && isset($_GET['saved'])) {
+            if($_GET['saved'] == "true") {
+                add_action('admin_notices', array($this,'successNotice'));
+            } else {
+                add_action('admin_notices', array($this,'errorNotice'));
+            }
+        }
+    }
+
+    /**
      * To load the script files
      * @return void
      */
     public static function scriptFiles() {
-        if(isset($_GET['page']) && isset($_GET['tab']) && $_GET['page'] == 'woo_discount_rules' && $_GET['tab'] == 'addons') {
+        if(isset($_GET['page']) && isset($_GET['addon']) && $_GET['page'] == 'woo_discount_rules' && $_GET['addon'] == 'omnibus_directive') {
             wp_enqueue_script('wdr_od_add_js',trailingslashit(WDR_OD_PLUGIN_URL) . 'assets/Js/index.js',array('jquery'), WDR_OD_VERSION);
         }
     }

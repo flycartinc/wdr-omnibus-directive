@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($){
     $(".awdr-od-select-rules").selectWoo();
 
-    $('input[name="wdr-od-is-show-message-option"]').change(function(){
+    $('input[name="wdr_od_is_show_message_option"]').change(function(){
         if($(this).val() == "1"){
             $('#wdr_od_select_message_position').show();
             $('#wdr_od_override_omnibus_message_show').show();
@@ -13,7 +13,7 @@ jQuery(document).ready(function ($){
         }
     });
 
-    $('#wdr-od-is-override-omnibus-message').change(function() {
+    $('#wdr_od_is_override_omnibus_message').change(function() {
         if(this.checked) {
             $('#wdr_od_select_message_position').hide();
         }else{
