@@ -108,6 +108,10 @@ class Helper {
                 break;
             }
         }
+        if(empty($wdr_od_price_history) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current) && empty($min_price)){
+            $min_price = $wdr_od_price_current['price'];
+            $this->date = time();
+        }
         return apply_filters('wdr_omnibus_directive_min_price', isset($min_price) ? $min_price : 0 );
     }
 

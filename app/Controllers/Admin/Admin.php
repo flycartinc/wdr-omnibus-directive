@@ -10,7 +10,7 @@ class Admin
     /**
      * @var Helper
      */
-    private static $helper , $check_rule_for_merged_message;
+    private static $helper, $check_rule_for_merged_message;
 
     public function __construct()
     {
@@ -68,6 +68,12 @@ class Admin
         if(!empty($wdr_od_price_history) && is_array($wdr_od_price_history)){
             $prices = array_column($wdr_od_price_history, 'price');
             $min_price = min($prices);
+        }
+        if(empty($wdr_od_price_history) && empty($min_price)) {
+            $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
+            if (!empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
+                $min_price = $wdr_od_price_current['price'];
+            }
         }
         $min_price = isset($min_price) ? $min_price : 0;
         $date = self::$helper->date;
@@ -152,6 +158,12 @@ class Admin
             $prices = array_column($wdr_od_price_history, 'price');
             $min_price = min($prices);
         }
+        if(empty($wdr_od_price_history) && empty($min_price)) {
+            $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
+            if (!empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
+                $min_price = $wdr_od_price_current['price'];
+            }
+        }
 
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : 0;
@@ -195,6 +207,12 @@ class Admin
 
             $prices = array_column($wdr_od_price_history, 'price');
             $min_price = min($prices);
+        }
+        if(empty($wdr_od_price_history) && empty($min_price)) {
+            $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
+            if (!empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
+                $min_price = $wdr_od_price_current['price'];
+            }
         }
 
         $date = self::$helper->date;
@@ -251,6 +269,13 @@ class Admin
                 if($price_history_data['price'] == $price_lowest){
                     $timestamp = $price_history_data['timestamp'];
                 }
+            }
+        }
+        if(empty($price_lowest && empty($timestamp))) {
+            $wdr_od_price_current = get_post_meta($id, '_wdr_od_price_current', true);
+            if (empty($wdr_od_price_history) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
+                $price_lowest = $wdr_od_price_current['price'];
+                $timestamp = $wdr_od_price_current['timestamp'];
             }
         }
 
