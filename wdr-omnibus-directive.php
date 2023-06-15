@@ -104,7 +104,7 @@ add_action('plugins_loaded', function() {
             $route =  new WDR_OD\App\Route();
             $route->hooks();
             if(function_exists('load_plugin_textdomain')){
-                load_plugin_textdomain( 'wdr-omnibus-directive', FALSE, basename( dirname( __FILE__ ) ) . '/i18n/languages/' );
+                load_plugin_textdomain( 'wdr-omnibus-directive', false, basename( dirname( __FILE__ ) ) . '/i18n/languages/' );
             }
             do_action('wdr_omnibus_directive_loaded');
         }
