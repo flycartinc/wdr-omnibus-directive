@@ -28,7 +28,7 @@ class OmnibusAddon extends Base {
             'section' => $section,
             'number_of_days' => isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30,
             'is_show_omnibus_message_option' => isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0,
-            'message' => isset($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated from {{date}}",
+            'message' => isset($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}",
             'is_override_omnibus_message' => isset($settings_data['is_override_omnibus_message']) ? $settings_data['is_override_omnibus_message'] : 0,
             'position_to_show_message' => isset($settings_data['position_to_show_message']) ? $settings_data['position_to_show_message'] : "woocommerce_single_product_summary",
             'is_omnibus_plugin_active' => isset($is_omnibus_plugin_active) ? $is_omnibus_plugin_active : 0,

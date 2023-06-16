@@ -19,7 +19,6 @@ if (!defined('ABSPATH')) {
                 <tr>
                     <td>
                         <label class="awdr-left-align"><?php esc_attr_e('Select rules', 'wdr-omnibus-directive') ?></label>
-                        <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Select the product adjustment rules', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Note : Currently, we support product adjustment rules only', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
@@ -74,10 +73,10 @@ if (!defined('ABSPATH')) {
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('You can use the following shortcode', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{price}} -> Replace the lowest price', 'wdr-omnibus-directive'); ?></span>
                         <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{date}} -> Display the day when was lowest price', 'wdr-omnibus-directive'); ?></span>
-                        <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>:') . esc_html_e('Preview lowest price was {{price}} updated from {{date}}', 'wdr-omnibus-directive'); ?></span>
+                        <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>:') . esc_html_e('Preview lowest price was {{price}} updated on {{date}}', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
-                        <?php $message = isset($message) && !empty($message)? $message : "Preview lowest price was {{price}} updated from {{date}}"; ?>
+                        <?php $message = isset($message) && !empty($message)? $message : "Preview lowest price was {{price}} updated on {{date}}"; ?>
                         <textarea name="wdr_od_message" rows="5"  cols="30" > <?php esc_attr_e($message, 'wdr-omnibus-directive'); ?> </textarea>
                     </td>
                 </tr>
