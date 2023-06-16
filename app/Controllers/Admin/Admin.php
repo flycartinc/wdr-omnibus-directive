@@ -28,7 +28,8 @@ class Admin
 
         global $product;
         $is_eligible = self::$helper->checkRuleId($product);
-        if(isset($is_eligible) && empty($is_eligible)){
+        $wdr_od_price_current = get_post_meta($product->get_id(), '_wdr_od_price_current', true);
+        if(isset($is_eligible) && empty($is_eligible) && empty($wdr_od_price_current)){
             return $message;
         }
 
@@ -55,7 +56,8 @@ class Admin
     public static function changeOmnibusPriceLowest($price_lowest, $product) {
 
         $is_eligible = self::$helper->checkRuleId($product);
-        if(isset($is_eligible) && empty($is_eligible)){
+        $wdr_od_price_current = get_post_meta($product->get_id(), '_wdr_od_price_current', true);
+        if(isset($is_eligible) && empty($is_eligible) && empty($wdr_od_price_current)){
             self::$check_rule_for_merged_message = true;
             return $price_lowest;
         }
@@ -111,7 +113,8 @@ class Admin
     public static function separateOmnibusMessageForDiscountRule() {
         global $product;
         $is_eligible = self::$helper->checkRuleId($product);
-        if(isset($is_eligible) && empty($is_eligible)){
+        $wdr_od_price_current = get_post_meta($product->get_id(), '_wdr_od_price_current', true);
+        if(isset($is_eligible) && empty($is_eligible) && empty($wdr_od_price_current)){
             return '';
         }
 
@@ -146,7 +149,8 @@ class Admin
             return $price;
         }
         $is_eligible = self::$helper->checkRuleId($product);
-        if(isset($is_eligible) && empty($is_eligible)){
+        $wdr_od_price_current = get_post_meta($product->get_id(), '_wdr_od_price_current', true);
+        if(isset($is_eligible) && empty($is_eligible) && empty($wdr_od_price_current)){
             return $price;
         }
 
@@ -195,7 +199,8 @@ class Admin
     public static function separateDynamicPriceHtmlOmnibusMessage($price_html, $product, $awdr_request) {
 
         $is_eligible = self::$helper->checkRuleId($product);
-        if(isset($is_eligible) && empty($is_eligible)){
+        $wdr_od_price_current = get_post_meta($product->get_id(), '_wdr_od_price_current', true);
+        if(isset($is_eligible) && empty($is_eligible) && empty($wdr_od_price_current)){
             return $price_html;
         }
 
