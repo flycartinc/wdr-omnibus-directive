@@ -19,19 +19,26 @@ if (!defined('ABSPATH')) {
                 <tr>
                     <td>
                         <label class="awdr-left-align"><?php esc_attr_e('Select rules', 'wdr-omnibus-directive') ?></label>
-                        <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Note : Currently, we support product adjustment rules only', 'wdr-omnibus-directive'); ?></span>
+                        <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Currently, we support product adjustment rules only', 'wdr-omnibus-directive'); ?></span>
                     </td>
                     <td>
                         <?php if(isset($check_enabled_rules) && is_array($check_enabled_rules)&& !empty($check_enabled_rules)) {
-                        ?>
-                        <select class="wdr-search-box awdr-od-select-rules" data-placeholder="<?php esc_attr_e(" Select rules here ", 'wdr-omnibus-directive');?>" name="wdr_od_selected_rules[]" multiple="true" >
-                            <?php
-                            foreach ($check_enabled_rules as $check_enabled_rule) {
-                                echo '<option  ' . esc_html($check_enabled_rule['selected']) . '  value="' . esc_attr($check_enabled_rule['rule_id']) . '">' . esc_html($check_enabled_rule['rule_title']) . '</option>';
-                            }
                             ?>
-                        </select>
-                        <?php
+                            <select class="wdr-search-box awdr-od-select-rules" data-placeholder="<?php esc_attr_e(" Select rules here ", 'wdr-omnibus-directive');?>" name="wdr_od_selected_rules[]" multiple="true" >
+                                <option value="all"
+                                    <?php if(!empty($check_select_all_product_adjustment) && is_array($check_select_all_product_adjustment)){
+                                        if(in_array("all", $check_select_all_product_adjustment)){
+                                            echo ' selected ';
+                                        }
+                                    } ?>
+                                ><?php esc_attr_e("All active product adjustment rules", 'woo-discount-rules'); ?></option>
+                                <?php
+                                foreach ($check_enabled_rules as $check_enabled_rule) {
+                                    echo '<option  ' . esc_html($check_enabled_rule['selected']) . '  value="' . esc_attr($check_enabled_rule['rule_id']) . '">' . esc_html($check_enabled_rule['rule_title']) . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <?php
                         } else {
                             ?>
                             <div style="color:#ff6700"> <?php esc_attr_e("Currently we support only for the Discount type: Product Adjustment.", 'wdr-omnibus-directive') ?></div>
@@ -58,12 +65,12 @@ if (!defined('ABSPATH')) {
                         <input type="radio" data-name="hide_table_position" name="wdr_od_is_show_message_option"
                                id="is_show_omnibus_message_option_1" value="1"
                             <?php echo(!empty($is_show_omnibus_message_option) ? 'checked' : '')  ?>><label
-                        for="is_show_omnibus_message_option_1"><?php esc_attr_e('Yes', 'wdr-omnibus-directive'); ?></label>
+                                for="is_show_omnibus_message_option_1"><?php esc_attr_e('Yes', 'wdr-omnibus-directive'); ?></label>
 
                         <input type="radio" data-name="hide_table_position" name="wdr_od_is_show_message_option"
                                id="is_show_omnibus_message_option" value="0"
                             <?php echo(empty($is_show_omnibus_message_option) ? 'checked' : '') ?>><label
-                        for="is_show_omnibus_message_option"><?php esc_attr_e('No', 'wdr-omnibus-directive'); ?></label>
+                                for="is_show_omnibus_message_option"><?php esc_attr_e('No', 'wdr-omnibus-directive'); ?></label>
                     </td>
                 </tr>
 

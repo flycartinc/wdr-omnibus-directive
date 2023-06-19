@@ -30,9 +30,10 @@ class OmnibusAddon extends Base {
             'is_show_omnibus_message_option' => isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0,
             'message' => isset($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}",
             'is_override_omnibus_message' => isset($settings_data['is_override_omnibus_message']) ? $settings_data['is_override_omnibus_message'] : 0,
-            'position_to_show_message' => isset($settings_data['position_to_show_message']) ? $settings_data['position_to_show_message'] : "woocommerce_single_product_summary",
+            'position_to_show_message' => isset($settings_data['position_to_show_message']) ? $settings_data['position_to_show_message'] : "woocommerce_get_price_html",
             'is_omnibus_plugin_active' => isset($is_omnibus_plugin_active) ? $is_omnibus_plugin_active : 0,
             'check_enabled_rules' => isset($check_enabled_rules) && !empty($check_enabled_rules) && is_array($check_enabled_rules) ? $check_enabled_rules : array(),
+            'check_select_all_product_adjustment' => isset($settings_data['selected_rules']) && !empty($settings_data['selected_rules']) && is_array($settings_data['selected_rules']) ? $settings_data['selected_rules'] : array(),
         );
         self::$template_helper->setPath(WDR_OD_PLUGIN_PATH . 'app/Views/Admin/OmnibusAddon.php')->setData($params)->display();
     }
