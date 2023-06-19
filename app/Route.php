@@ -36,7 +36,7 @@ class Route
                     add_filter('iworks_omnibus_message_template', array(self::$admin, 'mergeOmnibusMessageWithDiscountRule'), 10, 3);
                 }
             } else {
-                $position_to_show_message = isset($settings_data['position_to_show_message']) && is_string($settings_data['position_to_show_message']) ? $settings_data['position_to_show_message'] : "woocommerce_single_product_summary";
+                $position_to_show_message = isset($settings_data['position_to_show_message']) && is_string($settings_data['position_to_show_message']) ? $settings_data['position_to_show_message'] : "woocommerce_get_price_html";
                 $position_to_show_message = apply_filters('wdr_omnibus_directive_show_message_position', $position_to_show_message);
                 if($position_to_show_message == 'woocommerce_get_price_html') {
                     add_filter('woocommerce_get_price_html', array(self::$admin, 'separateGetPriceHtmlOmnibusMessage'), 100, 2);

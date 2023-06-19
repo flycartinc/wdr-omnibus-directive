@@ -221,8 +221,10 @@ class Helper {
                     foreach ($rule_ids as $rule_id) {
                         if(isset($rules[$rule_id])) {
                             $matched_rule = $rules[$rule_id]->rule; // Here we get the matched rule info
-                            if( $matched_rule->enabled == 1 &&  in_array($matched_rule->id,$selected_rules) && $matched_rule->discount_type == "wdr_simple_discount" ){
-                                return true;
+                            if($matched_rule->enabled == 1 && $matched_rule->discount_type == "wdr_simple_discount"){
+                                if(in_array($matched_rule->id,$selected_rules) || in_array('all', $selected_rules)) {
+                                    return true;
+                                }
                             }
                         }
                     }

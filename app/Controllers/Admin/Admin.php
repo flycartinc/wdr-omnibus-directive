@@ -320,7 +320,7 @@ class Admin
                     'message' => Rule::validateHtmlBeforeSave(isset($message) ? trim($message) : null),
                     'is_override_omnibus_message' => isset($is_override_omnibus_message) && in_array($is_override_omnibus_message, $acceptable,true) ? $is_override_omnibus_message : 0,
                     'selected_rules' => isset($selected_rules) && is_array($selected_rules) ? $selected_rules : array(),
-                    'position_to_show_message' => isset($position_to_show_message) ? sanitize_text_field($position_to_show_message) : 'woocommerce_single_product_summary',
+                    'position_to_show_message' => isset($position_to_show_message) ? sanitize_text_field($position_to_show_message) : 'woocommerce_get_price_html',
                 ];
                 update_option('wdr_omnibus_directive',$settings_data);
                 wp_safe_redirect(add_query_arg('saved', 'true'));
