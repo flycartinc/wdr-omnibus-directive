@@ -282,7 +282,7 @@ class Admin
                 }
             }
         }
-        if(empty($price_lowest && empty($timestamp))) {
+        if(empty($price_lowest) && empty($timestamp)) {
             $wdr_od_price_current = get_post_meta($id, '_wdr_od_price_current', true);
             if (empty($wdr_od_price_history) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
                 $price_lowest = $wdr_od_price_current['price'];
