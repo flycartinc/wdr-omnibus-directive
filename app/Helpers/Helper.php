@@ -78,23 +78,41 @@ class Helper {
         }
 
         // Update the price history in _wdr_od_price_history meta key
-        if (!empty($discount) && !empty($wdr_od_price_current['price']) && $discount < $wdr_od_price_current['price']) {
+        if(!empty($discount) && !empty($wdr_od_price_current['price'])) {
+            if ($discount < $wdr_od_price_current['price']) {
 
-            $wdr_od_price_history_update = [
-                'price' => $wdr_od_price_current['price'],
-                'timestamp' => current_time('timestamp', true),
-            ];
+                $wdr_od_price_history_update = [
+                    'price' => $wdr_od_price_current['price'],
+                    'timestamp' => current_time('timestamp', true),
+                ];
 
-            $wdr_od_price_current_update = [
-                'price' => $discount,
-                'timestamp' => current_time('timestamp', true),
-            ];
+                $wdr_od_price_current_update = [
+                    'price' => $discount,
+                    'timestamp' => current_time('timestamp', true),
+                ];
 
-            $wdr_od_price_history[] = $wdr_od_price_history_update;
-            sort($wdr_od_price_history);
+                $wdr_od_price_history[] = $wdr_od_price_history_update;
+                sort($wdr_od_price_history);
 
-            update_post_meta($product_id, '_wdr_od_price_current', $wdr_od_price_current_update);
-            update_post_meta($product_id, '_wdr_od_price_history', $wdr_od_price_history);
+                update_post_meta($product_id, '_wdr_od_price_current', $wdr_od_price_current_update);
+                update_post_meta($product_id, '_wdr_od_price_history', $wdr_od_price_history);
+            }
+
+            if ($discount > $wdr_od_price_current['price'] && !empty($wdr_od_price_history) && is_array($wdr_od_price_history)) {
+                $lowest_history_price = min(array_column($wdr_od_price_history, 'price'));
+                if ($wdr_od_price_current['price'] < $lowest_history_price) {
+
+                    $wdr_od_price_history_update = [
+                        'price' => $wdr_od_price_current['price'],
+                        'timestamp' => current_time('timestamp', true),
+                    ];
+
+                    $wdr_od_price_history[] = $wdr_od_price_history_update;
+                    sort($wdr_od_price_history);
+
+                    update_post_meta($product_id, '_wdr_od_price_history', $wdr_od_price_history);
+                }
+            }
         }
 
         if(!empty($wdr_od_price_history) && is_array($wdr_od_price_history)){
