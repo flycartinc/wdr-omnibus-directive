@@ -266,36 +266,27 @@ class Admin
      * @return void
      */
     public static function showLowestPriceInProductEditPage() {
-
         global $post;
-        $id = $post->ID;
-        $price_history = get_post_meta($id, '_wdr_od_price_history', true);
-        $price_lowest = 0;
-        $timestamp = 0;
-        if(!empty($price_history) && is_array($price_history)){
-            $prices = array_column($price_history, 'price');
-            $price_lowest = min($prices);
-
-            foreach ($price_history as $price_history_data) {
-                if($price_history_data['price'] == $price_lowest){
-                    $timestamp = $price_history_data['timestamp'];
-                }
-            }
-        }
-        if(empty($price_lowest && empty($timestamp))) {
-            $wdr_od_price_current = get_post_meta($id, '_wdr_od_price_current', true);
-            if (empty($wdr_od_price_history) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
-                $price_lowest = $wdr_od_price_current['price'];
-                $timestamp = $wdr_od_price_current['timestamp'];
-            }
-        }
-
-        $settings_data = get_option('wdr_omnibus_directive');
-        $number_of_days = isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30;
-
+        $post_id = $post->ID;
+        $data_for_product_edit_page = self::$helper->getLowestPriceForProductEditPage($post_id);
         self::$helper->headerForShowLowestPriceInProductEditPage('description');
-        self::$helper->showLowestPreviewPriceInProductEditPage($price_lowest, $number_of_days);
-        self::$helper->showLowestPreviewPriceDateInProductEditPage($timestamp, $number_of_days);
+        self::$helper->showLowestPreviewPriceInProductEditPage($data_for_product_edit_page['price_lowest'], $data_for_product_edit_page['number_of_days']);
+        self::$helper->showLowestPreviewPriceDateInProductEditPage($data_for_product_edit_page['timestamp'], $data_for_product_edit_page['number_of_days']);
+    }
+
+    /**
+     * Show the lowest price in product edit page for variants
+     * @param $loop
+     * @param $variation_data
+     * @param $variation
+     * @return void
+     */
+    public static function showLowestPriceInProductEditPageForVariants($loop, $variation_data, $variation) {
+        $post_id = $variation->ID;
+        $data_for_product_edit_page = self::$helper->getLowestPriceForProductEditPage($post_id);
+        self::$helper->headerForShowLowestPriceInProductEditPage('form-row form-row-full');
+        self::$helper->showLowestPreviewPriceInProductEditPage($data_for_product_edit_page['price_lowest'], $data_for_product_edit_page['number_of_days'],['wrapper_class' => 'form-row form-row-first']);
+        self::$helper->showLowestPreviewPriceDateInProductEditPage($data_for_product_edit_page['timestamp'], $data_for_product_edit_page['number_of_days'],['wrapper_class' => 'form-row form-row-last']);
     }
 
     /**

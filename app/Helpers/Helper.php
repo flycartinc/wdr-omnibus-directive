@@ -134,6 +134,41 @@ class Helper {
     }
 
     /**
+     * Get the lowest price for product edit page
+     * @param $post_id
+     * @return array
+     */
+    public function getLowestPriceForProductEditPage($post_id) {
+        $data_for_product_edit_page = [];
+        $price_history = get_post_meta($post_id, '_wdr_od_price_history', true);
+        $data_for_product_edit_page['price_lowest'] = 0;
+        $data_for_product_edit_page['timestamp'] = 0;
+
+        if(!empty($price_history) && is_array($price_history)){
+            $prices = array_column($price_history, 'price');
+            $data_for_product_edit_page['price_lowest'] = min($prices);
+            foreach ($price_history as $price_history_data) {
+                if($price_history_data['price'] == $data_for_product_edit_page['price_lowest']){
+                    $data_for_product_edit_page['timestamp'] = $price_history_data['timestamp'];
+                }
+            }
+        }
+
+        if(empty($data_for_product_edit_page['price_lowest']) && empty($data_for_product_edit_page['timestamp'])) {
+            $wdr_od_price_current = get_post_meta($post_id, '_wdr_od_price_current', true);
+            if (empty($wdr_od_price_history) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
+                $data_for_product_edit_page['price_lowest'] = $wdr_od_price_current['price'];
+                $data_for_product_edit_page['timestamp'] = $wdr_od_price_current['timestamp'];
+            }
+        }
+
+        $settings_data = get_option('wdr_omnibus_directive');
+        $data_for_product_edit_page['number_of_days'] = isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30;
+
+        return $data_for_product_edit_page;
+    }
+
+    /**
      * Header for lowest price display field in product edit page
      * @param $class
      * @return void
