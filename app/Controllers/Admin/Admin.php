@@ -201,6 +201,9 @@ class Admin
      */
     public static function separateDynamicPriceHtmlOmnibusMessage($price_html, $product, $awdr_request) {
 
+        if($product->get_type() != 'variation'){
+            return $price_html;
+        }
         $is_eligible = self::$helper->checkRuleId($product);
         $wdr_od_price_current = get_post_meta($product->get_id(), '_wdr_od_price_current', true);
         if(isset($is_eligible) && empty($is_eligible) && empty($wdr_od_price_current)){
@@ -252,11 +255,15 @@ class Admin
      * @return string
      */
     public static function DynamicPriceHtmlForOmnibusCompatible($price_html, $product, $awdr_request) {
-        ob_start();
+        if($product->get_type() != 'variation'){
+            return $price_html;
+        }
         $product_id = (int)Woocommerce::getProductId($product);
         if(empty($product_id)) {
             return $price_html;
         }
+
+        ob_start();
         do_action( 'iworks_omnibus_wc_lowest_price_message', $product_id);
         return $price_html . ob_get_clean();
     }
