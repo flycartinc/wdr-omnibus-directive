@@ -315,7 +315,7 @@ class Admin
                 $settings_data = [
                     'number_of_days' => isset($number_of_days) && is_numeric($number_of_days) && $number_of_days >= 30 ? round($number_of_days) : 30,
                     'is_show_omnibus_message_option' => isset($is_show_omnibus_message_option) && in_array($is_show_omnibus_message_option, $acceptable,true) ? $is_show_omnibus_message_option : 0,
-                    'message' => Rule::validateHtmlBeforeSave(isset($message) ? trim($message) : null),
+                    'message' => Rule::validateHtmlBeforeSave(isset($message) ? trim(wp_unslash($message)) : null),
                     'is_override_omnibus_message' => isset($is_override_omnibus_message) && in_array($is_override_omnibus_message, $acceptable,true) ? $is_override_omnibus_message : 0,
                     'selected_rules' => isset($selected_rules) && is_array($selected_rules) ? $selected_rules : array(),
                     'position_to_show_message' => isset($position_to_show_message) ? sanitize_text_field($position_to_show_message) : 'woocommerce_get_price_html',
