@@ -61,6 +61,7 @@ class Route
 
         if(is_admin()) {
             add_action('woocommerce_product_options_pricing', array(self::$admin, 'showLowestPriceInProductEditPage'), 1);
+            add_action('woocommerce_variation_options_pricing', array(self::$admin, 'showLowestPriceInProductEditPageForVariants'), 10, 3);
             add_filter('plugin_action_links_' . WDR_OD_PLUGIN_BASENAME, array(self::$admin, 'wdrOmActionLink'));
             add_filter('advanced_woo_discount_rules_page_addons', array(self::$helper, 'omnibusAddon'));
             add_action('admin_init', array(self::$admin, 'saveSettingsData'));
