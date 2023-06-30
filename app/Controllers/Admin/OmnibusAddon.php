@@ -12,10 +12,10 @@ class OmnibusAddon extends Base {
 
     /**
      * Add the plugin to Discount rules Add-on tab
-     * @param $task
-     * @return mixed|void
+     * @param $page
+     * @return void
      */
-    function render($task = null) {
+    function render($page = null) {
 
         self::$helper = empty( self::$helper) ? new Helper() : self::$helper;
 
@@ -23,6 +23,7 @@ class OmnibusAddon extends Base {
         $settings_data = get_option('wdr_omnibus_directive');
         $is_omnibus_plugin_active = self::$helper->isOmnibusPluginActive();
         $check_enabled_rules = self::$helper->checkRuleEnabled();
+        $settings_saved_status = self::$helper->getSettingsSavedStatus();
 
         $params = array(
             'section' => $section,
@@ -34,6 +35,7 @@ class OmnibusAddon extends Base {
             'is_omnibus_plugin_active' => isset($is_omnibus_plugin_active) ? $is_omnibus_plugin_active : 0,
             'check_enabled_rules' => isset($check_enabled_rules) && !empty($check_enabled_rules) && is_array($check_enabled_rules) ? $check_enabled_rules : array(),
             'check_select_all_product_adjustment' => isset($settings_data['selected_rules']) && !empty($settings_data['selected_rules']) && is_array($settings_data['selected_rules']) ? $settings_data['selected_rules'] : array(),
+            'settings_saved_status' => isset($settings_saved_status) ? $settings_saved_status : null,
         );
         self::$template_helper->setPath(WDR_OD_PLUGIN_PATH . 'app/Views/Admin/OmnibusAddon.php')->setData($params)->display();
     }

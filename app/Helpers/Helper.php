@@ -335,4 +335,19 @@ class Helper {
             add_filter('woocommerce_variable_price_html', array(\Wdr\App\Router::$manage_discount, 'getVariablePriceHtml'), 9, 2);
         }
     }
+
+    /**
+     * Get settings saved message status
+     * @return bool|null
+     */
+    public function getSettingsSavedStatus() {
+        if (isset($_GET['addon']) && $_GET['addon'] == "omnibus_directive" && isset($_GET['saved'])) {
+            if($_GET['saved'] == "true") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return null;
+    }
 }

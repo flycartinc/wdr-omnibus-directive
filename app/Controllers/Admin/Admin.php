@@ -330,20 +330,6 @@ class Admin
     }
 
     /**
-     * Print settings saved message
-     * @return void
-     */
-    function printNotice() {
-        if (isset($_GET['addon']) && $_GET['addon'] == "omnibus_directive" && isset($_GET['saved'])) {
-            if($_GET['saved'] == "true") {
-                add_action('admin_notices', array($this,'successNotice'));
-            } else {
-                add_action('admin_notices', array($this,'errorNotice'));
-            }
-        }
-    }
-
-    /**
      * To load the script files
      * @return void
      */
@@ -363,25 +349,5 @@ class Admin
             'settings' => '<a href="' . esc_url(admin_url('admin.php?page=woo_discount_rules&tab=addons&addon=omnibus_directive&section=settings')) . '">' . __('Settings', 'wdr-omnibus-directive') . '</a>',
         );
         return array_merge($action_links, $links);
-    }
-
-    /**
-     * Settings save successfully message
-     * @return void
-     */
-    function successNotice() {
-        $class = 'notice notice-success';
-        $message = __('Saved successfully.', 'wdr-omnibus-directive');
-        printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
-    }
-
-    /**
-     * Settings save failed message
-     * @return void
-     */
-    function errorNotice() {
-        $class = 'notice notice-error';
-        $message = __('Error occurred.', 'wdr-omnibus-directive');
-        printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
     }
 }
