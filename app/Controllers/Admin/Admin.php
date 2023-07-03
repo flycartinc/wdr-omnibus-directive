@@ -35,7 +35,7 @@ class Admin
 
         $min_price = self::$helper->getAndUpdateMinimumPrice($product);
         $date = self::$helper->date;
-        $lowest_price_date = isset($date) && !empty($date)? $date : time();
+        $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product);
         if (!empty($min_price)) {
             $settings_data = get_option('wdr_omnibus_directive');
@@ -81,7 +81,7 @@ class Admin
         }
         $min_price = isset($min_price) ? $min_price : 0;
         $date = self::$helper->date;
-        $date = isset($date) ? $date : time();
+        $date = isset($date) ? $date : current_time('timestamp', true);
 
         $price_lowest['price'] = $min_price;
         $price_lowest['timestamp'] = $date;
@@ -122,7 +122,7 @@ class Admin
 
         $min_price = self::$helper->getAndUpdateMinimumPrice($product);
         $date = self::$helper->date;
-        $lowest_price_date = isset($date) && !empty($date)? $date : time();
+        $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product);
         if (!empty($min_price)) {
             $settings_data = get_option('wdr_omnibus_directive');
@@ -174,7 +174,7 @@ class Admin
         }
 
         $date = self::$helper->date;
-        $lowest_price_date = isset($date) && !empty($date)? $date : time();
+        $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         if (!empty($min_price)) {
             $settings_data = get_option('wdr_omnibus_directive');
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
@@ -229,7 +229,7 @@ class Admin
         }
 
         $date = self::$helper->date;
-        $lowest_price_date = isset($date) && !empty($date)? $date : time();
+        $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         if (!empty($min_price)) {
             $settings_data = get_option('wdr_omnibus_directive');
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
