@@ -66,7 +66,6 @@ class Route
             add_filter('advanced_woo_discount_rules_page_addons', array(self::$helper, 'omnibusAddon'));
             add_action('admin_init', array(self::$admin, 'saveSettingsData'));
             add_action('admin_enqueue_scripts', array(self::$admin, 'scriptFiles'));
-            add_action('admin_init', array(self::$admin, 'printNotice'));
         }
     }
 }
