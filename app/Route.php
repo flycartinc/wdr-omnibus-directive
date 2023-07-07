@@ -15,8 +15,8 @@ class Route
      * @return void
      */
     public function hooks() {
-        self::$admin = empty( self::$admin) ? new Admin() : self::$admin;
-        self::$helper = empty( self::$helper) ? new Helper() : self::$helper;
+        self::$admin = empty(self::$admin) ? new Admin() : self::$admin;
+        self::$helper = empty(self::$helper) ? new Helper() : self::$helper;
 
         $settings_data = get_option('wdr_omnibus_directive');
         $is_omnibus_plugin_active = self::$helper->isOmnibusPluginActive();

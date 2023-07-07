@@ -26,39 +26,11 @@ if (!defined('ABSPATH')) {
         <div class="awdr-configuration-form">
             <form id="wdr-od-configuration-form" method="post">
                 <h1><?php esc_attr_e('Omnibus Directive : General settings', 'wdr-omnibus-directive') ?></h1>
+                <div class="notice notice-info">
+                    <p><?php echo esc_html('Currently, we support only product adjustment rules.'); ?></p>
+                </div>
                 <table class="wdr-general-setting form-table">
                     <tbody style="background-color: #fff;">
-                    <tr>
-                        <td>
-                            <label class="awdr-left-align"><?php esc_attr_e('Select rules', 'wdr-omnibus-directive') ?></label>
-                            <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Currently, we support product adjustment rules only', 'wdr-omnibus-directive'); ?></span>
-                        </td>
-                        <td>
-                            <?php if(!empty($check_enabled_rules)) {
-                                ?>
-                                <select class="wdr-search-box awdr-od-select-rules" data-placeholder="<?php esc_attr_e(" Select rules here ", 'wdr-omnibus-directive');?>" name="wdr_od_selected_rules[]" multiple="true" >
-                                    <option value="all"
-                                        <?php if(!empty($check_select_all_product_adjustment)){
-                                            if(in_array("all", $check_select_all_product_adjustment)){
-                                                echo ' selected ';
-                                            }
-                                        } ?>
-                                    ><?php esc_attr_e("All active product adjustment rules", 'woo-discount-rules'); ?></option>
-                                    <?php
-                                    foreach ($check_enabled_rules as $check_enabled_rule) {
-                                        echo '<option  ' . esc_html($check_enabled_rule['selected']) . '  value="' . esc_attr($check_enabled_rule['rule_id']) . '">' . esc_html($check_enabled_rule['rule_title']) . '</option>';
-                                    }
-                                    ?>
-                                </select>
-                                <?php
-                            } else {
-                                ?>
-                                <div style="color:#ff6700"> <?php esc_attr_e("Currently we support only for the Discount type: Product Adjustment.", 'wdr-omnibus-directive') ?></div>
-                                <div style="color:#ff6700"> <?php esc_attr_e("Seems you doesn't have any active Product adjustment rules.", 'wdr-omnibus-directive') ?></div>
-                                <?php
-                            } ?>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             <label class="awdr-left-align"><?php esc_attr_e('Number of days', 'wdr-omnibus-directive') ?></label>
