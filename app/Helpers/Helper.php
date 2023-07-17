@@ -177,14 +177,17 @@ class Helper {
     /**
      * Header for lowest price display field in product edit page
      * @param $class
+     * @param $space
      * @return void
      */
-    public static function headerForShowLowestPriceInProductEditPage($class = '') {
+    public static function headerForShowLowestPriceInProductEditPage($class = '', $space='') {
         printf(
-            '<h3%s>%s</h3>',
+            '<h4%s>%s</h4>',
             empty($class) ? '' : sprintf(' class="%s"', esc_attr($class)),
-            esc_html__('Discount rules lowest preview price', 'wdr-omnibus-directive')
+            esc_html__('Omnibus Directive - From Discount Rules', 'wdr-omnibus-directive')
         );
+        echo $space;
+        esc_html_e('This data will update dynamically when customer access the product page (As in Discount Rules, the discount applied on run time).', 'wdr-omnibus-directive');
     }
 
     /**

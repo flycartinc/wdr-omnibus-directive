@@ -293,7 +293,8 @@ class Admin
         global $post;
         $post_id = $post->ID;
         $data_for_product_edit_page = self::$helper->getLowestPriceForProductEditPage($post_id);
-        self::$helper->headerForShowLowestPriceInProductEditPage('description');
+        $space = '<br>'.'<br>'.str_repeat('&nbsp;', 2);
+        self::$helper->headerForShowLowestPriceInProductEditPage('description', $space);
         self::$helper->showLowestPreviewPriceInProductEditPage($data_for_product_edit_page['price_lowest'], $data_for_product_edit_page['number_of_days']);
         self::$helper->showLowestPreviewPriceDateInProductEditPage($data_for_product_edit_page['timestamp'], $data_for_product_edit_page['number_of_days']);
     }
