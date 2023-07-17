@@ -3,7 +3,7 @@
  * Plugin Name:       Woo Discount Rules: Omnibus Directive
  * Plugin URI:        https://www.flycart.org/products/wordpress/woocommerce-discount-rules/addons/
  * Description:       Plugin displays the lowest discount price of product applied through Discount Rules.
- * Version:           1.0.0 Beta-2
+ * Version:           1.0.0 Beta-3
  * Author:            Flycart
  * Author URI:        https://flycart.org
  * Text Domain:       wdr-omnibus-directive
@@ -20,7 +20,7 @@ defined('ABSPATH') or exit;
  * Current version of our app
  */
 if (!defined('WDR_OD_VERSION')) {
-    define('WDR_OD_VERSION', '1.0.0 Beta-2');
+    define('WDR_OD_VERSION', '1.0.0 Beta-3');
 }
 
 /**
