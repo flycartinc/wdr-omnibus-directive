@@ -33,10 +33,10 @@ class Admin
             return $message;
         }
 
-        $min_price = self::$helper->getAndUpdateMinimumPrice($product);
+        $min_price = self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
-        $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product);
+        $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
         if (!empty($min_price)) {
             $settings_data = get_option('wdr_omnibus_directive');
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
@@ -63,7 +63,7 @@ class Admin
             return $price_lowest;
         }
 
-        self::$helper->getAndUpdateMinimumPrice($product);
+        self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
         $product_id = (int)Woocommerce::getProductId($product);
         if(empty($product_id)) {
             return $price_lowest;
@@ -74,9 +74,13 @@ class Admin
             $min_price = min($prices);
         }
         if(empty($wdr_od_price_history) && empty($min_price)) {
-            $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
             if (!empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
                 $min_price = $wdr_od_price_current['price'];
+            }
+        }
+        if(isset($is_eligible) && empty($is_eligible)) {
+            if(!empty($min_price) && !empty($wdr_od_price_current)){
+                $min_price = min($min_price, $wdr_od_price_current['price']);
             }
         }
         $min_price = isset($min_price) ? $min_price : 0;
@@ -120,10 +124,10 @@ class Admin
             return '';
         }
 
-        $min_price = self::$helper->getAndUpdateMinimumPrice($product);
+        $min_price = self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
-        $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product);
+        $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
         if (!empty($min_price)) {
             $settings_data = get_option('wdr_omnibus_directive');
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
@@ -156,7 +160,7 @@ class Admin
             return $price;
         }
 
-        self::$helper->getAndUpdateMinimumPrice($product);
+        self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
         $product_id = (int)Woocommerce::getProductId($product);
         if(empty($product_id)) {
             return $price;
@@ -172,6 +176,13 @@ class Admin
                 $min_price = $wdr_od_price_current['price'];
             }
         }
+
+        if(isset($is_eligible) && empty($is_eligible)) {
+            if(!empty($min_price) && !empty($wdr_od_price_current)){
+                $min_price = min($min_price, $wdr_od_price_current['price']);
+            }
+        }
+
 
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
@@ -210,7 +221,7 @@ class Admin
             return $price_html;
         }
 
-        self::$helper->getAndUpdateMinimumPrice($product);
+        self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
         $product_id = (int)Woocommerce::getProductId($product);
         if(empty($product_id)) {
             return $price_html;
@@ -225,6 +236,12 @@ class Admin
             $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
             if (!empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
                 $min_price = $wdr_od_price_current['price'];
+            }
+        }
+
+        if(isset($is_eligible) && empty($is_eligible)) {
+            if(!empty($min_price) && !empty($wdr_od_price_current)){
+                $min_price = min($min_price, $wdr_od_price_current['price']);
             }
         }
 
@@ -308,7 +325,6 @@ class Admin
                 $is_show_omnibus_message_option = $_POST['wdr_od_is_show_message_option'];
                 $message = $_POST['wdr_od_message'];
                 $is_override_omnibus_message = $_POST['wdr_od_is_override_omnibus_message'];
-                $selected_rules = $_POST['wdr_od_selected_rules'];
                 $position_to_show_message = $_POST['wdr_od_position_to_show_message'];
 
                 $acceptable = array('1','0');
@@ -317,7 +333,6 @@ class Admin
                     'is_show_omnibus_message_option' => isset($is_show_omnibus_message_option) && in_array($is_show_omnibus_message_option, $acceptable,true) ? $is_show_omnibus_message_option : 0,
                     'message' => Rule::validateHtmlBeforeSave(isset($message) ? trim(wp_unslash($message)) : null),
                     'is_override_omnibus_message' => isset($is_override_omnibus_message) && in_array($is_override_omnibus_message, $acceptable,true) ? $is_override_omnibus_message : 0,
-                    'selected_rules' => isset($selected_rules) && is_array($selected_rules) ? $selected_rules : array(),
                     'position_to_show_message' => isset($position_to_show_message) ? sanitize_text_field($position_to_show_message) : 'woocommerce_get_price_html',
                 ];
                 update_option('wdr_omnibus_directive',$settings_data);

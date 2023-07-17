@@ -12,7 +12,7 @@ class Helper {
      * Get and update minimum price
      * @return int|mixed
      */
-    public function getAndUpdateMinimumPrice($product) {
+    public function getAndUpdateMinimumPrice($product, $is_eligible) {
         $product_id = Woocommerce::getProductId($product);
         $price = Woocommerce::getProductPrice($product);
         if ($product->get_type() == 'variable') {
@@ -25,7 +25,7 @@ class Helper {
                     $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', false, $product_variation, 1, 0, 'discounted_price', true, false);
                     if (isset($discount) && $discount !== false) {
                         $discount_price[] = $discount;
-                        $this->updateMinimumPrice($discount, $key);
+                        $this->updateMinimumPrice($discount, $key, $is_eligible);
                         $min_discounted_price = (min($discount_price));
                     }
                 }
@@ -34,7 +34,7 @@ class Helper {
         } else {
             $discount = apply_filters('advanced_woo_discount_rules_get_product_discount_price_from_custom_price', $price, $product, 1, 0, 'discounted_price', true, false);
         }
-        return $this->updateMinimumPrice($discount, $product_id);
+        return $this->updateMinimumPrice($discount, $product_id, $is_eligible);
     }
 
     /**
@@ -43,7 +43,7 @@ class Helper {
      * @param $product_id
      * @return mixed|null
      */
-    public function updateMinimumPrice($discount, $product_id) {
+    public function updateMinimumPrice($discount, $product_id, $is_eligible) {
         $settings_data = get_option('wdr_omnibus_directive');
         $number_of_days = isset($settings_data['number_of_days']) ? $settings_data['number_of_days'] : 30;
         $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
@@ -129,6 +129,12 @@ class Helper {
         if(empty($wdr_od_price_history) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current) && empty($min_price)){
             $min_price = $wdr_od_price_current['price'];
             $this->date = current_time('timestamp', true);
+        }
+
+        if(isset($is_eligible) && empty($is_eligible)) {
+            if(!empty($min_price) && !empty($wdr_od_price_current)){
+                $min_price = min($min_price, $wdr_od_price_current['price']);
+            }
         }
         return apply_filters('wdr_omnibus_directive_min_price', isset($min_price) ? $min_price : 0 );
     }
@@ -269,15 +275,11 @@ class Helper {
                 if(isset($discount['total_discount_details']) && !empty($discount['total_discount_details'])){
                     $rules = \Wdr\App\Controllers\DiscountCalculator::$rules;
                     $rule_ids = array_keys($discount['total_discount_details']);
-                    $settings_data = get_option('wdr_omnibus_directive');
-                    $selected_rules = isset($settings_data['selected_rules']) && !empty($settings_data['selected_rules']) && is_array($settings_data['selected_rules']) ? $settings_data['selected_rules'] : array();;
                     foreach ($rule_ids as $rule_id) {
                         if(isset($rules[$rule_id])) {
                             $matched_rule = $rules[$rule_id]->rule; // Here we get the matched rule info
                             if($matched_rule->enabled == 1 && $matched_rule->discount_type == "wdr_simple_discount"){
-                                if(in_array($matched_rule->id,$selected_rules) || in_array('all', $selected_rules)) {
-                                    return true;
-                                }
+                                return true;
                             }
                         }
                     }
@@ -297,30 +299,6 @@ class Helper {
             $active_plugins = array_merge($active_plugins, get_site_option('active_sitewide_plugins', array()));
         }
         return in_array('omnibus/omnibus.php', $active_plugins, false) || array_key_exists('omnibus/omnibus.php', $active_plugins);
-    }
-
-    /**
-     * Check the enabled product adjustment rules
-     * @return array
-     */
-    public function checkRuleEnabled() {
-        $check_enabled_rules = array();
-        if (class_exists('\Wdr\App\Controllers\ManageDiscount')) {
-            $rules = \Wdr\App\Controllers\ManageDiscount::$available_rules;
-            $settings_data = get_option('wdr_omnibus_directive');
-            $selected_rules = isset($settings_data['selected_rules']) && !empty($settings_data['selected_rules']) && is_array($settings_data['selected_rules']) ? $settings_data['selected_rules'] : array();
-            foreach ($rules as $available_rule) {
-                $selected = in_array($available_rule->rule->id, $selected_rules) ? "selected" : "";
-                if ($available_rule->rule->discount_type == 'wdr_simple_discount' && $available_rule->rule->enabled == 1) {
-                    $check_enabled_rules[] = [
-                        'selected' => $selected,
-                        'rule_id' => $available_rule->rule->id,
-                        'rule_title' => $available_rule->rule->title,
-                    ];
-                }
-            }
-        }
-        return $check_enabled_rules;
     }
 
     /**
