@@ -146,7 +146,7 @@ class Helper {
      * @return array|string|string[]|null
      */
     public function getFormattedOmnibusMessage($min_price, $lowest_price_date) {
-        $message = null;
+        $message = '';
         $settings_data = get_option('wdr_omnibus_directive');
         $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
         if (!empty($min_price) && !empty($is_show_omnibus_message)) {
