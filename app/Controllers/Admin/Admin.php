@@ -108,7 +108,7 @@ class Admin
         if(empty($is_show_omnibus_message)){
             return $message;
         }
-        $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
+        $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : __('Preview lowest price was {{price}} updated on {{date}}', 'wdr-omnibus-directive');
         $message = __($message, 'wdr-omnibus-directive');
         $message = str_replace('{{price}}', '{price}', $message);
         $message = str_replace('{{date}}', date_i18n(get_option('date_format'),"{timestamp}"), $message);
