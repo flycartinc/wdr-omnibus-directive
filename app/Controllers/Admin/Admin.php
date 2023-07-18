@@ -37,8 +37,9 @@ class Admin
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
-        if (!empty($min_price)) {
-            $settings_data = get_option('wdr_omnibus_directive');
+        $settings_data = get_option('wdr_omnibus_directive');
+        $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
+        if (!empty($min_price) && !empty($is_show_omnibus_message)) {
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
             $message = __($message, 'wdr-omnibus-directive');
             $message = str_replace('{{price}}', wc_price($min_price), $message);
@@ -64,6 +65,11 @@ class Admin
         }
 
         self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
+        $settings_data = get_option('wdr_omnibus_directive');
+        $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
+        if(empty($is_show_omnibus_message)){
+            return $price_lowest;
+        }
         $product_id = (int)Woocommerce::getProductId($product);
         if(empty($product_id)) {
             return $price_lowest;
@@ -104,6 +110,10 @@ class Admin
             return $message;
         }
         $settings_data = get_option('wdr_omnibus_directive');
+        $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
+        if(empty($is_show_omnibus_message)){
+            return $message;
+        }
         $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
         $message = __($message, 'wdr-omnibus-directive');
         $message = str_replace('{{price}}', '{price}', $message);
@@ -128,8 +138,9 @@ class Admin
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
-        if (!empty($min_price)) {
-            $settings_data = get_option('wdr_omnibus_directive');
+        $settings_data = get_option('wdr_omnibus_directive');
+        $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
+        if (!empty($min_price) && !empty($is_show_omnibus_message)) {
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
             $message = __($message, 'wdr-omnibus-directive');
             $message = str_replace('{{price}}', wc_price($min_price), $message);
@@ -161,6 +172,11 @@ class Admin
         }
 
         self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
+        $settings_data = get_option('wdr_omnibus_directive');
+        $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
+        if(empty($is_show_omnibus_message)){
+            return $price;
+        }
         $product_id = (int)Woocommerce::getProductId($product);
         if(empty($product_id)) {
             return $price;
@@ -187,7 +203,6 @@ class Admin
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         if (!empty($min_price)) {
-            $settings_data = get_option('wdr_omnibus_directive');
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
             $message = __($message, 'wdr-omnibus-directive');
             $message = str_replace('{{price}}', wc_price($min_price), $message);
@@ -222,6 +237,11 @@ class Admin
         }
 
         self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
+        $settings_data = get_option('wdr_omnibus_directive');
+        $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
+        if(empty($is_show_omnibus_message)){
+            return $price_html;
+        }
         $product_id = (int)Woocommerce::getProductId($product);
         if(empty($product_id)) {
             return $price_html;
@@ -248,7 +268,6 @@ class Admin
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         if (!empty($min_price)) {
-            $settings_data = get_option('wdr_omnibus_directive');
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
             $message = __($message, 'wdr-omnibus-directive');
             $message = str_replace('{{price}}', wc_price($min_price), $message);
@@ -273,6 +292,11 @@ class Admin
      */
     public static function DynamicPriceHtmlForOmnibusCompatible($price_html, $product, $awdr_request) {
         if($product->get_type() != 'variation'){
+            return $price_html;
+        }
+        $settings_data = get_option('wdr_omnibus_directive');
+        $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
+        if(empty($is_show_omnibus_message)){
             return $price_html;
         }
         $product_id = (int)Woocommerce::getProductId($product);
