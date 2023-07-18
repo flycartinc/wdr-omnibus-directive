@@ -140,6 +140,26 @@ class Helper {
     }
 
     /**
+     * Get formatted omnibus message
+     * @param $min_price
+     * @param $lowest_price_date
+     * @return array|string|string[]|null
+     */
+    public function getFormattedOmnibusMessage($min_price, $lowest_price_date) {
+        $message = null;
+        $settings_data = get_option('wdr_omnibus_directive');
+        $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
+        if (!empty($min_price) && !empty($is_show_omnibus_message)) {
+            $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : "Preview lowest price was {{price}} updated on {{date}}";
+            $message = __($message, 'wdr-omnibus-directive');
+            $message = str_replace('{{price}}', wc_price($min_price), $message);
+            $date_format = apply_filters('wdr_omnibus_directive_message_date_format',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
+            $message = str_replace('{{date}}', $date_format, $message);
+        }
+        return $message;
+    }
+
+    /**
      * Get the lowest price for product edit page
      * @param $post_id
      * @return array
