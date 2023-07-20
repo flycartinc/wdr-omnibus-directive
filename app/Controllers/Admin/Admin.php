@@ -37,7 +37,6 @@ class Admin
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
         $min_price = !empty($min_price) ? $min_price : self::$helper->getAndUpdateMinimumPrice($product, $is_eligible);
-
         $message = self::$helper->getFormattedOmnibusMessage($min_price, $lowest_price_date);
 
         return apply_filters('wdr_omnibus_directive_merge_omnibus_message_with_discount_rule', $message, $min_price, $lowest_price_date);
@@ -79,7 +78,7 @@ class Admin
             }
         }
         if(isset($is_eligible) && empty($is_eligible)) {
-            if(!empty($min_price) && !empty($wdr_od_price_current)){
+            if(isset($min_price) && !empty($wdr_od_price_current)){
                 $min_price = min($min_price, $wdr_od_price_current['price']);
             }
         }
@@ -180,14 +179,14 @@ class Admin
         }
 
         if(isset($is_eligible) && empty($is_eligible)) {
-            if(!empty($min_price) && !empty($wdr_od_price_current)){
+            if(isset($min_price) && !empty($wdr_od_price_current)){
                 $min_price = min($min_price, $wdr_od_price_current['price']);
             }
         }
 
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
-        $min_price = !empty($min_price) ? $min_price : 0;
+        $min_price = isset($min_price) ? $min_price : 0;
 
         $get_omnibus_message = self::$helper->getFormattedOmnibusMessage($min_price, $lowest_price_date);
         $message = !empty($get_omnibus_message) ? '<div class="wdr-od-message">' . $get_omnibus_message . '</div>' : '';
@@ -238,14 +237,14 @@ class Admin
         }
 
         if(isset($is_eligible) && empty($is_eligible)) {
-            if(!empty($min_price) && !empty($wdr_od_price_current)){
+            if(isset($min_price) && !empty($wdr_od_price_current)){
                 $min_price = min($min_price, $wdr_od_price_current['price']);
             }
         }
 
         $date = self::$helper->date;
         $lowest_price_date = isset($date) && !empty($date)? $date : current_time('timestamp', true);
-        $min_price = !empty($min_price) ? $min_price : 0;
+        $min_price = isset($min_price) ? $min_price : 0;
 
         $get_omnibus_message = self::$helper->getFormattedOmnibusMessage($min_price, $lowest_price_date);
         $message = !empty($get_omnibus_message) ? '<div class="wdr-od-message">' . $get_omnibus_message . '</div>' : '';

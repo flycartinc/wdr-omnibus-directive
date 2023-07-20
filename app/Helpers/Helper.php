@@ -1,6 +1,8 @@
 <?php
 namespace WDR_OD\App\Helpers;
+use Wdr\App\Controllers\DiscountCalculator;
 use Wdr\App\Helpers\Woocommerce;
+use Wdr\App\Router;
 use WDR_OD\App\Controllers\Admin\OmnibusAddon;
 defined('ABSPATH') or exit;
 
@@ -41,6 +43,7 @@ class Helper {
      * Update the minimum price
      * @param $discount
      * @param $product_id
+     * @param $is_eligible
      * @return mixed|null
      */
     public function updateMinimumPrice($discount, $product_id, $is_eligible) {
@@ -50,7 +53,7 @@ class Helper {
         $wdr_od_price_history = get_post_meta($product_id, '_wdr_od_price_history', true);
 
         // Update the current price in _wdr_od_price_current meta key
-        if (!empty($discount) && empty($wdr_od_price_current)) {
+        if (empty($wdr_od_price_current)) {
             $wdr_od_price_current_update = [
                 'price' => $discount,
                 'timestamp' => current_time('timestamp', true),
@@ -78,7 +81,7 @@ class Helper {
         }
 
         // Update the price history in _wdr_od_price_history meta key
-        if(!empty($discount) && !empty($wdr_od_price_current['price'])) {
+        if(isset($wdr_od_price_current['price'])) {
             if ($discount < $wdr_od_price_current['price']) {
 
                 $wdr_od_price_history_update = [
@@ -149,7 +152,7 @@ class Helper {
         $message = '';
         $settings_data = get_option('wdr_omnibus_directive');
         $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
-        if (!empty($min_price) && !empty($is_show_omnibus_message)) {
+        if (!empty($is_show_omnibus_message)) {
             $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : __('Preview lowest price was {{price}} updated on {{date}}', 'wdr-omnibus-directive');
             $message = __($message, 'wdr-omnibus-directive');
             $message = str_replace('{{price}}', wc_price($min_price), $message);
@@ -296,7 +299,7 @@ class Helper {
         if($discount !== false){
             if(class_exists('\Wdr\App\Controllers\DiscountCalculator')) {
                 if(isset($discount['total_discount_details']) && !empty($discount['total_discount_details'])){
-                    $rules = \Wdr\App\Controllers\DiscountCalculator::$rules;
+                    $rules = DiscountCalculator::$rules;
                     $rule_ids = array_keys($discount['total_discount_details']);
                     foreach ($rule_ids as $rule_id) {
                         if(isset($rules[$rule_id])) {
@@ -330,10 +333,10 @@ class Helper {
      */
     public function changeDiscountRulesPriceHtmlPriority() {
         if(class_exists('\Wdr\App\Router')){
-            remove_filter('woocommerce_get_price_html', array(\Wdr\App\Router::$manage_discount, 'getPriceHtml'), 100, 2);
-            add_filter('woocommerce_get_price_html', array(\Wdr\App\Router::$manage_discount, 'getPriceHtml'), 9, 2);
-            remove_filter('woocommerce_variable_price_html', array(\Wdr\App\Router::$manage_discount, 'getVariablePriceHtml'), 100);
-            add_filter('woocommerce_variable_price_html', array(\Wdr\App\Router::$manage_discount, 'getVariablePriceHtml'), 9, 2);
+            remove_filter('woocommerce_get_price_html', array(Router::$manage_discount, 'getPriceHtml'), 100, 2);
+            add_filter('woocommerce_get_price_html', array(Router::$manage_discount, 'getPriceHtml'), 9, 2);
+            remove_filter('woocommerce_variable_price_html', array(Router::$manage_discount, 'getVariablePriceHtml'), 100);
+            add_filter('woocommerce_variable_price_html', array(Router::$manage_discount, 'getVariablePriceHtml'), 9, 2);
         }
     }
 
