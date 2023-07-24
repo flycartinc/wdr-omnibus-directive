@@ -225,7 +225,6 @@ class Admin
         }
         $wdr_od_price_history = get_post_meta($product_id, '_wdr_od_price_history', true);
         if(!empty($wdr_od_price_history) && is_array($wdr_od_price_history)){
-
             $prices = array_column($wdr_od_price_history, 'price');
             $min_price = min($prices);
         }

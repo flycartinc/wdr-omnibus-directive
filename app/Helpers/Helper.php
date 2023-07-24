@@ -19,7 +19,7 @@ class Helper {
         $price = Woocommerce::getProductPrice($product);
         if ($product->get_type() == 'variable') {
             $discount_price = array();
-            $min_discounted_price = 0;
+            $min_discounted_price = false;
             $available_variations = $product->get_variation_prices();
             foreach ($available_variations['regular_price'] as $key => $regular_price) {
                 if (function_exists('wc_get_product')) {
@@ -53,7 +53,7 @@ class Helper {
         $wdr_od_price_history = get_post_meta($product_id, '_wdr_od_price_history', true);
 
         // Update the current price in _wdr_od_price_current meta key
-        if (empty($wdr_od_price_current)) {
+        if ($discount !== false && empty($wdr_od_price_current)) {
             $wdr_od_price_current_update = [
                 'price' => $discount,
                 'timestamp' => current_time('timestamp', true),
@@ -72,7 +72,7 @@ class Helper {
             $wdr_od_price_history = array();
         }
 
-        foreach ( $wdr_od_price_history as $key => $wdr_od_price_history_data ) {
+        foreach ($wdr_od_price_history as $key => $wdr_od_price_history_data) {
             $history_price_time_difference = current_time('timestamp', true) - $wdr_od_price_history_data['timestamp'];
             if($history_price_time_difference > $number_of_days * 24 * 60 * 60 ) { //$number_of_days * 24 * 60 * 60
                 unset($wdr_od_price_history[$key]);
@@ -81,7 +81,7 @@ class Helper {
         }
 
         // Update the price history in _wdr_od_price_history meta key
-        if(isset($wdr_od_price_current['price'])) {
+        if($discount !== false && isset($wdr_od_price_current['price'])) {
             if ($discount < $wdr_od_price_current['price']) {
 
                 $wdr_od_price_history_update = [
