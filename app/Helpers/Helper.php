@@ -172,6 +172,9 @@ class Helper {
         $price_history = get_post_meta($post_id, '_wdr_od_price_history', true);
         $data_for_product_edit_page['price_lowest'] = 0;
         $data_for_product_edit_page['timestamp'] = 0;
+        $wdr_od_price_current = get_post_meta($post_id, '_wdr_od_price_current', true);
+        $product = wc_get_product($post_id);
+        $is_eligible = $this->checkRuleId($product);
 
         if(!empty($price_history) && is_array($price_history)){
             $prices = array_column($price_history, 'price');
@@ -184,10 +187,15 @@ class Helper {
         }
 
         if(empty($data_for_product_edit_page['price_lowest']) && empty($data_for_product_edit_page['timestamp'])) {
-            $wdr_od_price_current = get_post_meta($post_id, '_wdr_od_price_current', true);
             if (empty($wdr_od_price_history) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
                 $data_for_product_edit_page['price_lowest'] = $wdr_od_price_current['price'];
                 $data_for_product_edit_page['timestamp'] = $wdr_od_price_current['timestamp'];
+            }
+        }
+
+        if(isset($is_eligible) && empty($is_eligible)) {
+            if(isset($data_for_product_edit_page['price_lowest']) && !empty($wdr_od_price_current)){
+                $data_for_product_edit_page['price_lowest'] = min($data_for_product_edit_page['price_lowest'], $wdr_od_price_current['price']);
             }
         }
 
