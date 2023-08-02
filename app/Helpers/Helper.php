@@ -8,8 +8,6 @@ defined('ABSPATH') or exit;
 
 class Helper {
 
-    public $date;
-
     /**
      * Get and update minimum price
      * @return int|mixed
@@ -74,7 +72,7 @@ class Helper {
 
         foreach ($wdr_od_price_history as $key => $wdr_od_price_history_data) {
             $history_price_time_difference = current_time('timestamp', true) - $wdr_od_price_history_data['timestamp'];
-            if($history_price_time_difference > $number_of_days * 24 * 60 * 60 ) { //$number_of_days * 24 * 60 * 60
+            if($history_price_time_difference > $number_of_days * 24 * 60 * 60 ) {
                 unset($wdr_od_price_history[$key]);
                 update_post_meta($product_id, '_wdr_od_price_history', $wdr_od_price_history);
             }
@@ -83,10 +81,9 @@ class Helper {
         // Update the price history in _wdr_od_price_history meta key
         if($discount !== false && isset($wdr_od_price_current['price'])) {
             if ($discount < $wdr_od_price_current['price']) {
-
                 $wdr_od_price_history_update = [
                     'price' => $wdr_od_price_current['price'],
-                    'timestamp' => current_time('timestamp', true),
+                    'timestamp' => $wdr_od_price_current['timestamp'],
                 ];
 
                 $wdr_od_price_current_update = [
@@ -107,7 +104,7 @@ class Helper {
 
                     $wdr_od_price_history_update = [
                         'price' => $wdr_od_price_current['price'],
-                        'timestamp' => current_time('timestamp', true),
+                        'timestamp' => $wdr_od_price_current['timestamp'],
                     ];
 
                     $wdr_od_price_history[] = $wdr_od_price_history_update;
@@ -118,28 +115,44 @@ class Helper {
             }
         }
 
+        return $this->getMinimumPriceAndDate($product_id, $is_eligible);
+    }
+
+    /**
+     * Get minimum price and date for display
+     * @param $product_id
+     * @param $is_eligible
+     * @return mixed|null
+     */
+    public function getMinimumPriceAndDate($product_id, $is_eligible) {
+        $display = array();
+        $wdr_od_price_history = get_post_meta($product_id, '_wdr_od_price_history', true);
+        $wdr_od_price_current = get_post_meta($product_id, '_wdr_od_price_current', true);
+
         if(!empty($wdr_od_price_history) && is_array($wdr_od_price_history)){
             $prices = array_column($wdr_od_price_history, 'price');
-            $min_price = min($prices);
-        }
-
-        foreach ($wdr_od_price_history as $wdr_od_price_history_data) {
-            if(isset($min_price) && $wdr_od_price_history_data['price'] == $min_price){
-                $this->date = $wdr_od_price_history_data['timestamp'];
-                break;
+            $display['min_price'] = min($prices);
+            foreach ($wdr_od_price_history as $wdr_od_price_history_data) {
+                if (isset($display['min_price']) && $wdr_od_price_history_data['price'] == $display['min_price']) {
+                    $display['date'] = $wdr_od_price_history_data['timestamp'];
+                    break;
+                }
             }
         }
-        if(empty($wdr_od_price_history) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current) && empty($min_price)){
-            $min_price = $wdr_od_price_current['price'];
-            $this->date = current_time('timestamp', true);
+
+        if(empty($wdr_od_price_history) && empty($display) && !empty($wdr_od_price_current) && is_array($wdr_od_price_current)) {
+            $display['min_price'] = $wdr_od_price_current['price'];
+            $display['date'] = $wdr_od_price_current['timestamp'];
         }
 
         if(isset($is_eligible) && empty($is_eligible)) {
-            if(!empty($min_price) && !empty($wdr_od_price_current)){
-                $min_price = min($min_price, $wdr_od_price_current['price']);
+            if(!empty($display['min_price']) && !empty($wdr_od_price_current) && $display['min_price'] > $wdr_od_price_current['price']){
+                $display['min_price'] = $wdr_od_price_current['price'];
+                $display['date'] = $wdr_od_price_current['timestamp'];
             }
         }
-        return apply_filters('wdr_omnibus_directive_min_price', isset($min_price) ? $min_price : 0 );
+
+        return apply_filters('wdr_omnibus_directive_display_price_and_date', isset($display) ? $display : array() );
     }
 
     /**
