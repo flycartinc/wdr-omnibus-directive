@@ -166,7 +166,7 @@ class Helper {
         $settings_data = get_option('wdr_omnibus_directive');
         $is_show_omnibus_message = isset($settings_data['is_show_omnibus_message_option']) ? $settings_data['is_show_omnibus_message_option'] : 0;
         if (!empty($is_show_omnibus_message)) {
-            $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : __('Preview lowest price was {{price}} updated on {{date}}', 'wdr-omnibus-directive');
+            $message = isset($settings_data['message']) && !empty($settings_data['message']) ? $settings_data['message'] : __('Previous lowest price: {{price}}', 'wdr-omnibus-directive');
             $message = __($message, 'wdr-omnibus-directive');
             $message = str_replace('{{price}}', wc_price($min_price), $message);
             $date_format = apply_filters('wdr_omnibus_directive_message_date_format',date_i18n(get_option('date_format'),$lowest_price_date), $lowest_price_date, $min_price);
@@ -230,7 +230,7 @@ class Helper {
             empty($class) ? '' : sprintf(' class="%s"', esc_attr($class)),
             esc_html__('Omnibus Directive - From Discount Rules', 'wdr-omnibus-directive')
         );
-        echo $space;
+        echo $space; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         esc_html_e('This data will update dynamically when customer access the product page (As in Discount Rules, the discount applied on run time).', 'wdr-omnibus-directive');
     }
 
