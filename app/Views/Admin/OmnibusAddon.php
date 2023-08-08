@@ -43,7 +43,7 @@ if (!defined('ABSPATH')) {
                     <tr>
                         <td>
                             <label class="awdr-left-align"><?php esc_attr_e('Show Omnibus message on product page', 'wdr-omnibus-directive') ?></label>
-                            <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Hide the message from omnibus plugin', 'wdr-omnibus-directive'); ?></span>
+                            <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('Display Omnibus message on product page', 'wdr-omnibus-directive'); ?></span>
                         </td>
                         <td>
                             <input type="radio" data-name="hide_table_position" name="wdr_od_is_show_message_option"
@@ -57,14 +57,13 @@ if (!defined('ABSPATH')) {
                                     for="is_show_omnibus_message_option"><?php esc_attr_e('No', 'wdr-omnibus-directive'); ?></label>
                         </td>
                     </tr>
-
                     <tr class="hide_table_position" id="wdr_od_omnibus_message" style="<?php echo empty($is_show_omnibus_message_option) ? 'display:none' : ''; ?>">
                         <td>
                             <label class="awdr-left-align"><?php esc_attr_e('Omnibus Message', 'wdr-omnibus-directive') ?></label>
                             <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('You can use the following shortcode', 'wdr-omnibus-directive'); ?></span>
                             <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{price}} -> Replace the lowest price', 'wdr-omnibus-directive'); ?></span>
                             <span class="wdr_settings_desc_text awdr-clear-both"><?php esc_attr_e('{{date}} -> Display the day when was lowest price', 'wdr-omnibus-directive'); ?></span>
-                            <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>:') . esc_html_e('Preview lowest price was {{price}} updated on {{date}}', 'wdr-omnibus-directive'); ?></span>
+                            <span class="wdr_settings_desc_text awdr-clear-both"><?php _e('<strong>Eg</strong>:') . esc_html_e('Previous lowest price: {{price}}', 'wdr-omnibus-directive'); ?></span>
                         </td>
                         <td>
                             <textarea name="wdr_od_message" rows="5"  cols="30" > <?php esc_attr_e($message, 'wdr-omnibus-directive'); ?> </textarea>
