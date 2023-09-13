@@ -1,17 +1,16 @@
 <?php
 /**
  * Plugin Name:       Woo Discount Rules: Omnibus Directive
- * Plugin URI:        https://github.com/flycartinc/wdr-omnibus-directive-public
+ * Plugin URI:        https://github.com/flycartinc/wdr-omnibus-directive
  * Description:       Plugin displays the lowest discount price of product applied through Discount Rules.
- * Version:           1.0.0 Beta-8
+ * Version:           1.0.0
  * Author:            Flycart
  * Author URI:        https://flycart.org
  * Text Domain:       wdr-omnibus-directive
  * Slug:              wdr-omnibus-directive
  * Domain Path:       /i18n/languages
- * Requires at least: 5.2
+ * Requires at least: 5.3
  * WC requires at least: 5.0
- * WC tested up to: 7.3
  */
 
 defined('ABSPATH') or exit;
@@ -20,7 +19,7 @@ defined('ABSPATH') or exit;
  * Current version of our app
  */
 if (!defined('WDR_OD_VERSION')) {
-    define('WDR_OD_VERSION', '1.0.0 Beta-8');
+    define('WDR_OD_VERSION', '1.0.0');
 }
 
 /**
@@ -80,6 +79,20 @@ if (!defined('WDR_OD_WDR_REQUIRED_VERSION')) {
 }
 
 /**
+ * Remote repository url
+ */
+if (!defined('WDR_OD_REMOTE_REPO')) {
+    define('WDR_OD_REMOTE_REPO', 'https://github.com/flycartinc/wdr-omnibus-directive');
+}
+
+/**
+ * Remote branch name
+ */
+if (!defined('WDR_OD_REMOTE_BRANCH')) {
+    define('WDR_OD_REMOTE_BRANCH', 'stable');
+}
+
+/**
  * Package - autoload
  */
 if (!file_exists(WDR_OD_PLUGIN_PATH . '/vendor/autoload.php')) {
@@ -91,15 +104,14 @@ if (!file_exists(WDR_OD_PLUGIN_PATH . '/vendor/autoload.php')) {
 /**
  * Check compatibility
  */
-register_activation_hook(WDR_OD_PLUGIN_FILE, 'wdrOdPluginActivate');
-function wdrOdPluginActivate() {
+register_activation_hook(WDR_OD_PLUGIN_FILE, function() {
     if (class_exists('WDR_OD\App\Controllers\Admin\Compatibility')) {
         $Compatibility = new WDR_OD\App\Controllers\Admin\Compatibility();
         $Compatibility->checkVersion();
     } else {
         wp_die(__('Woo Discount Rules: Omnibus Directive is unable to find the Compatibility class.'));
     }
-}
+});
 
 /**
  * Call the Route class
@@ -121,12 +133,14 @@ add_action('plugins_loaded', function() {
 /**
  * Git configuration for update
  */
-require WDR_OD_PLUGIN_PATH.'/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-
-$myUpdateChecker = PucFactory::buildUpdateChecker(
-    'https://github.com/flycartinc/wdr-omnibus-directive-public',
-    WDR_OD_PLUGIN_FILE,
-    'wdr-omnibus-directive'
-);
-$myUpdateChecker->setBranch('main');
+if(file_exists(WDR_OD_PLUGIN_PATH . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php')) {
+    require WDR_OD_PLUGIN_PATH . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
+    if(class_exists('YahnisElsts\PluginUpdateChecker\v5\PucFactory')) {
+        $myUpdateChecker = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+            WDR_OD_REMOTE_REPO,
+            WDR_OD_PLUGIN_FILE,
+            'wdr-omnibus-directive'
+        );
+        $myUpdateChecker->setBranch(WDR_OD_REMOTE_BRANCH);
+    }
+}
