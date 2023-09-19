@@ -68,7 +68,7 @@ if (!defined('WDR_OD_WC_REQUIRED_VERSION')) {
  * Required WordPress Version
  */
 if (!defined('WDR_OD_WP_REQUIRED_VERSION')) {
-    define('WDR_OD_WP_REQUIRED_VERSION', '5.2');
+    define('WDR_OD_WP_REQUIRED_VERSION', '5.3');
 }
 
 /**

@@ -2,16 +2,17 @@
 Contributors: Flycart
 Donate link: https://flycart.org
 Tags: discount, rules, omnibus
-Requires at least: 5.2
-Tested up to: 6.1
+Requires at least: 5.3
 Stable tag: 1.0.0
 Requires PHP: 5.6
-License: GPL v3 or later
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Its helps you to show the lowest preview price.
+== Description ==
+
+Plugin displays the lowest discount price of product applied through Discount Rules.
 
 == Changelog ==
 
-= 1.0.0 - 00/00/2023 =
+= 1.0.0 - 15/09/2023 =
 * Initial release
+
+== Upgrade notice ==
